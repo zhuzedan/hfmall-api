@@ -1,8 +1,11 @@
 package org.edu.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.edu.domain.Product;
+import org.edu.domain.ProductSwiperImage;
 import org.edu.result.ResponseResult;
 import org.edu.service.ProductService;
+import org.edu.service.ProductSwiperImageService;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +27,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductSwiperImageService productSwiperImageService;
+
     /**
      * 查询热门
      * @return
@@ -42,10 +48,12 @@ public class ProductController {
     }
 
     @ApiOperation(value = "获取详情")
-    @GetMapping("/read/{id}")
-    public ResponseResult selectOne(@PathVariable Long id) {
+    @GetMapping("/read")
+    public ResponseResult selectOne(Integer id) {
         Product product = productService.getById(id);
-        return new  ResponseResult(200,"成功获取详情",product);
+        List<ProductSwiperImage> productSwiperImageList = productSwiperImageService.list(new QueryWrapper<ProductSwiperImage>().eq("productId", product.getId()).orderByAsc("sort"));
+        product.setProductSwiperImageList(productSwiperImageList);
+        return ResponseResult.success(product);
     }
 
     @ApiOperation(value = "新增数据")

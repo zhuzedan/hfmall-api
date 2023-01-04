@@ -3,6 +3,9 @@ package org.edu.domain;
 import java.util.Date;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,5 +47,8 @@ public class Product  {
     //商品类别编号
     private Integer categoryid;
 
+    //商品图片轮播
+    @TableField(select = false)
+    private List<ProductSwiperImage> productSwiperImageList;
 }
 
