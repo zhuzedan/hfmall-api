@@ -44,8 +44,8 @@ public class Knife4jConfig {
                 .apiInfo(adminApiInfo())
                 .select()
                 //只显示admin路径下的页面
-                .apis(RequestHandlerSelectors.basePackage("com.zzd"))
-                .paths(PathSelectors.regex("/admin/.*"))
+                .apis(RequestHandlerSelectors.basePackage("org.edu"))
+                .paths(PathSelectors.regex("/api/.*"))
                 .build()
                 .globalOperationParameters(pars);
         return adminApi;
