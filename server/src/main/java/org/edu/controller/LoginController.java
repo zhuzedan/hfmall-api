@@ -2,15 +2,11 @@ package org.edu.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.edu.domain.SystemUser;
 import org.edu.dto.LoginParam;
 import org.edu.result.ResponseResult;
 import org.edu.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author :zzd
@@ -27,5 +23,11 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseResult login(@RequestBody LoginParam loginParam) {
         return systemUserService.login(loginParam);
+    }
+
+    @ApiOperation("用户信息")
+    @GetMapping("/info")
+    public ResponseResult getInfo() {
+        return systemUserService.getInfo();
     }
 }

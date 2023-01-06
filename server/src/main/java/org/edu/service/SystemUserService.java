@@ -15,5 +15,8 @@ import org.edu.result.ResponseResult;
 public interface SystemUserService extends IService<SystemUser> {
 
     ResponseResult login(LoginParam loginParam);
+
+
+    ResponseResult getInfo();
 }
 

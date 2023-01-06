@@ -48,7 +48,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new RuntimeException("token不合法！");
         }
 
-        //3获取userId, redis获取用户信息
+        //3获取userId
         SecurityLoginUser securityLoginUser = new SecurityLoginUser();
         securityLoginUser.setId(Long.valueOf(userId));
         if (Objects.isNull(securityLoginUser)) {

@@ -1,10 +1,12 @@
 package org.edu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.edu.constants.SecurityConstants;
 import org.edu.domain.SystemUser;
 import org.edu.dto.LoginParam;
 import org.edu.dto.LoginUser;
+import org.edu.dto.SecurityLoginUser;
 import org.edu.exception.BusinessException;
 import org.edu.mapper.SystemUserMapper;
 import org.edu.result.ResponseResult;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -31,6 +34,8 @@ import java.util.Objects;
 public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemUser> implements SystemUserService {
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    SystemUserMapper systemUserMapper;
     @Override
     public ResponseResult login(LoginParam loginParam) {
         //使用ProviderManager auth方法进行验证
@@ -49,6 +54,23 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         map.put("tokenHead",SecurityConstants.TOKEN_PREFIX);
 
         return ResponseResult.success("登录成功",map);
+    }
+
+    /**
+     * 获取当前用户信息
+     * @return
+     */
+    @Override
+    public ResponseResult getInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SecurityLoginUser loginUser = (SecurityLoginUser) authentication.getPrincipal();
+        SystemUser systemUser = systemUserMapper.selectOne(new QueryWrapper<SystemUser>().eq("id", loginUser.getId()));
+        systemUser.setPassword(null);
+        Map<String,Object> map = new HashMap<>();
+        map.put("userInfo",systemUser);
+        map.put("routers",null);
+        map.put("buttons",null);
+        return ResponseResult.success(map);
     }
 }
 
