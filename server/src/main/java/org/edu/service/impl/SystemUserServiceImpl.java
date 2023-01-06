@@ -5,8 +5,10 @@ import org.edu.constants.SecurityConstants;
 import org.edu.domain.SystemUser;
 import org.edu.dto.LoginParam;
 import org.edu.dto.LoginUser;
+import org.edu.exception.BusinessException;
 import org.edu.mapper.SystemUserMapper;
 import org.edu.result.ResponseResult;
+import org.edu.result.ResultCodeEnum;
 import org.edu.service.SystemUserService;
 import org.edu.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         //校验失败了
         if(Objects.isNull(authenticate)){
-            throw new RuntimeException("用户名或密码错误！");
+            throw new BusinessException(ResultCodeEnum.LOGIN_ERROR.getCode(), ResultCodeEnum.LOGIN_ERROR.getMessage());
         }
         //生成自己jwt给前端
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
