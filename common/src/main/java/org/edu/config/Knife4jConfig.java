@@ -7,10 +7,9 @@ import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Parameter;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
@@ -24,20 +23,9 @@ import java.util.List;
 @Configuration
 @EnableSwagger2WebMvc
 public class Knife4jConfig {
-
+    private final static String headerName = "Authorization";
     @Bean
     public Docket adminApiConfig(){
-        List<Parameter> pars = new ArrayList<>();
-        ParameterBuilder tokenPar = new ParameterBuilder();
-        tokenPar.name("token")
-                .description("用户token")
-                .defaultValue("")
-                .modelRef(new ModelRef("string"))
-                .parameterType("header")
-                .required(false)
-                .build();
-        pars.add(tokenPar.build());
-        //添加head参数end
 
         Docket adminApi = new Docket(DocumentationType.SWAGGER_2)
                 .groupName("adminApi")
@@ -47,8 +35,33 @@ public class Knife4jConfig {
                 .apis(RequestHandlerSelectors.basePackage("org.edu"))
                 .paths(PathSelectors.regex("/api/.*"))
                 .build()
-                .globalOperationParameters(pars);
+                .securitySchemes(securitySchemes())//配置安全方案
+                .securityContexts(securityContexts())//配置安全方案所实现的上下文
+                ;
         return adminApi;
+    }
+    private List<SecurityScheme> securitySchemes() {
+        List<SecurityScheme> apiKeyList = new ArrayList<>();
+        //配置header头1
+        ApiKey token_access = new ApiKey(headerName, headerName, "header");
+        apiKeyList.add(token_access);
+        return apiKeyList;
+    }
+    private List<SecurityContext> securityContexts() {
+        List<SecurityContext> securityContextList = new ArrayList<>();
+        List<SecurityReference> securityReferenceList = new ArrayList<>();
+        //为每个api添加请求头
+        securityReferenceList.add(new SecurityReference(headerName, scopes()));
+        securityContextList.add(SecurityContext
+                .builder()
+                .securityReferences(securityReferenceList)
+                .forPaths(PathSelectors.any())
+                .build()
+        );
+        return securityContextList;
+    }
+    private AuthorizationScope[] scopes() {
+        return new AuthorizationScope[]{new AuthorizationScope("global", "accessAnything")};//作用域为全局
     }
     private ApiInfo adminApiInfo(){
 
