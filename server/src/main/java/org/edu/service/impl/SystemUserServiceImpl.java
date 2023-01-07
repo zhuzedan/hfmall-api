@@ -11,8 +11,10 @@ import org.edu.exception.BusinessException;
 import org.edu.mapper.SystemUserMapper;
 import org.edu.result.ResponseResult;
 import org.edu.result.ResultCodeEnum;
+import org.edu.service.SystemMenuService;
 import org.edu.service.SystemUserService;
 import org.edu.utils.JwtUtil;
+import org.edu.vo.RouterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -36,6 +39,8 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     AuthenticationManager authenticationManager;
     @Autowired
     SystemUserMapper systemUserMapper;
+    @Autowired
+    SystemMenuService systemMenuService;
     @Override
     public ResponseResult login(LoginParam loginParam) {
         //使用ProviderManager auth方法进行验证
@@ -66,10 +71,15 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         SecurityLoginUser loginUser = (SecurityLoginUser) authentication.getPrincipal();
         SystemUser systemUser = systemUserMapper.selectOne(new QueryWrapper<SystemUser>().eq("id", loginUser.getId()));
         systemUser.setPassword(null);
+        //查询菜单权限值
+        List<RouterVo> routerVoList = systemMenuService.getUserMenuList(systemUser.getId());
+        //查询按钮权限值
+        List<String> permsList = systemMenuService.getUserButtonList(systemUser.getId());
+
         Map<String,Object> map = new HashMap<>();
         map.put("userInfo",systemUser);
-        map.put("routers",null);
-        map.put("buttons",null);
+        map.put("routers",routerVoList);
+        map.put("buttons",permsList);
         return ResponseResult.success(map);
     }
 }
