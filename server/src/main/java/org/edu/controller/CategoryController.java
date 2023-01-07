@@ -32,22 +32,22 @@ public class CategoryController {
     @Autowired
     private ProductService productService;
 
-    @ApiOperation(value = "查询所有分类名称")
+    @ApiOperation(value = "查询所有大分类名称")
     @GetMapping("/queryAll")
     public ResponseResult findAll() {
         List<Category> list = categoryService.list();
         return ResponseResult.success(list);
     }
+    @ApiOperation(value = "查询大分类下的小分类")
+    @GetMapping("/querySubCategories")
+    public ResponseResult querySubCategories() {
+        return categoryService.querySubCategories();
+    }
 
-    @ApiOperation(value = "查询分类+商品")
+    @ApiOperation(value = "查询大分类下的小分类+商品")
     @GetMapping("/queryCategories")
-    public ResponseResult queryCategories() {
-        List<Category> categoryList = categoryService.list();
-        for (Category category: categoryList ) {
-            List<Product> productList = productService.list(new QueryWrapper<Product>().eq("categoryId",category.getId()));
-            category.setProductList(productList);
-        }
-        return ResponseResult.success(categoryList);
+    public ResponseResult queryProductList() {
+        return categoryService.queryProductList();
     }
 
     @ApiOperation(value = "获取详情")

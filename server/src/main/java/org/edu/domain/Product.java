@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * 商品表(Product)表实体类
  *
  * @author zzd
- * @since 2023-01-04 19:36:22
+ * @since 2023-01-07 22:55:50
  */
 @SuppressWarnings("serial")
 @Data
@@ -45,10 +45,10 @@ public class Product  {
     //商品描述
     private String description;
     //商品类别编号
-    private Integer categoryid;
-
+    private Integer subCategoryId;
     //商品图片轮播
     @TableField(select = false)
     private List<ProductSwiperImage> productSwiperImageList;
+
 }
 

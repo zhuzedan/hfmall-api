@@ -13,5 +13,9 @@ import org.edu.result.ResponseResult;
  */
 public interface CategoryService extends IService<Category> {
 
+    //查询分类下的小分类
+    ResponseResult querySubCategories();
+    //查询分类加商品
+    ResponseResult queryProductList();
 }
 
