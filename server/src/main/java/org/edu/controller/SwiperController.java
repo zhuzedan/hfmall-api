@@ -2,14 +2,17 @@ package org.edu.controller;
 
 
 
+import io.swagger.annotations.*;
+import org.edu.domain.Product;
 import org.edu.domain.Swiper;
 import org.edu.result.ResponseResult;
 import org.edu.service.SwiperService;
+import org.edu.vo.RespPageBean;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,9 +31,12 @@ public class SwiperController {
 
     @ApiOperation(value = "轮播图列表")
     @GetMapping("/querySwiper")
-    public ResponseResult findAll() {
-        List<Swiper> list = swiperService.list();
-        return ResponseResult.success(list);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
+    })
+    public ResponseResult<RespPageBean<Swiper>> queryPage(@ApiIgnore @RequestParam HashMap params) {
+        return swiperService.queryPage(params);
     }
 
     @ApiOperation(value = "获取详情")
