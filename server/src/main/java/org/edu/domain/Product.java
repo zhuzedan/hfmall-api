@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("t_product")
-public class Product  {
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+public class Product implements Serializable {
     @TableId
     private Integer id;
 
@@ -49,6 +51,9 @@ public class Product  {
     //商品图片轮播
     @TableField(select = false)
     private List<ProductSwiperImage> productSwiperImageList;
+    //商品类别
+    @TableField(select = false)
+    private SubCategory subCategory;
 
 }
 

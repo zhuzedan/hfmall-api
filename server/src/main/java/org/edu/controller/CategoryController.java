@@ -1,13 +1,8 @@
 package org.edu.controller;
 
-
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.edu.domain.Category;
-import org.edu.domain.Product;
 import org.edu.result.ResponseResult;
 import org.edu.service.CategoryService;
-import org.edu.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,9 +24,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private ProductService productService;
-
     @ApiOperation(value = "查询所有大分类名称")
     @GetMapping("/queryAll")
     public ResponseResult findAll() {
@@ -51,10 +43,10 @@ public class CategoryController {
     }
 
     @ApiOperation(value = "获取详情")
-    @GetMapping("/read/{id}")
-    public ResponseResult selectOne(@PathVariable Long id) {
+    @GetMapping("/read")
+    public ResponseResult selectOne(Long id) {
         Category category = categoryService.getById(id);
-        return new  ResponseResult(200,"成功获取详情",category);
+        return ResponseResult.success(category);
     }
 
     @ApiOperation(value = "新增数据")

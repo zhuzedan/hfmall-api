@@ -1,16 +1,18 @@
 package org.edu.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.*;
 import org.edu.domain.Product;
 import org.edu.domain.ProductSwiperImage;
 import org.edu.result.ResponseResult;
 import org.edu.service.ProductService;
 import org.edu.service.ProductSwiperImageService;
+import org.edu.vo.RespPageBean;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,15 +38,27 @@ public class ProductController {
      */
     @ApiOperation(value = "查询热门商品")
     @GetMapping("/hotProduct")
-    public ResponseResult findHot() {
-        return productService.findHot();
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
+    })
+    public ResponseResult<RespPageBean<Product>> findHot(@ApiIgnore @RequestParam HashMap params) {
+        return productService.findHot(params);
     }
 
-    @ApiOperation(value = "查询所有记录")
-    @GetMapping("/query")
-    public ResponseResult findAll() {
-        List<Product> list = productService.list();
-        return ResponseResult.success(list);
+    /**
+     * 根据条件分页查询商品
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "分页查询商品")
+    @GetMapping("queryProduct")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
+    })
+    public ResponseResult<RespPageBean<Product>> queryProductPage(@ApiIgnore @RequestParam HashMap params) {
+        return ResponseResult.success(productService.queryProductPage(params));
     }
 
     @ApiOperation(value = "获取详情")
