@@ -15,6 +15,7 @@ import org.edu.vo.RespPageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,8 +37,7 @@ public class SwiperServiceImpl extends ServiceImpl<SwiperMapper, Swiper> impleme
         Page<Swiper> page = new Page(pageNum, pageSize);
 
         LambdaQueryWrapper<Swiper> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-
-        IPage<Swiper> iPage = this.page(page, lambdaQueryWrapper);
+        IPage<Swiper> iPage = swiperMapper.selectPage(page, lambdaQueryWrapper);
         List<Swiper> list = iPage.getRecords();
 
         return ResponseResult.success(new RespPageBean<>(iPage.getTotal(),list));
