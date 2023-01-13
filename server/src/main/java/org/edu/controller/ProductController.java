@@ -52,7 +52,7 @@ public class ProductController {
      * @return
      */
     @ApiOperation(value = "分页查询商品")
-    @GetMapping("queryProduct")
+    @PostMapping("queryProduct")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),

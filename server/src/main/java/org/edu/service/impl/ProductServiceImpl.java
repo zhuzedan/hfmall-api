@@ -10,6 +10,7 @@ import org.edu.domain.Product;
 import org.edu.mapper.ProductMapper;
 import org.edu.result.ResponseResult;
 import org.edu.service.ProductService;
+import org.edu.utils.PageCountUtil;
 import org.edu.vo.RespPageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         IPage<Product> iPage = this.page(page, lambdaQueryWrapper);
         List<Product> list = iPage.getRecords();
-        return new RespPageBean<>(iPage.getTotal(),list);
+        Long pageCount = PageCountUtil.countPage( iPage.getTotal(), pageSize);
+        return new RespPageBean<>(iPage.getTotal(),pageCount, iPage.getCurrent(),iPage.getSize(),list);
     }
 
     @Override
@@ -54,7 +56,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         IPage<Product> iPage = this.page(page, productQueryWrapper);
         List<Product> list = iPage.getRecords();
-
         return ResponseResult.success(new RespPageBean<>(iPage.getTotal(),list));
     }
 
