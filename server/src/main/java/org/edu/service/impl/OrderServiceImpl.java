@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.edu.constant.PageConstant;
 import org.edu.result.ResponseResult;
+import org.edu.utils.PageCountUtil;
 import org.edu.vo.RespPageBean;
 import org.edu.domain.Order;
 import org.edu.service.OrderService;
@@ -35,7 +36,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         IPage<Order> iPage = this.page(page, lambdaQueryWrapper);
         List<Order> list = iPage.getRecords();
-        return ResponseResult.success(new RespPageBean<>(iPage.getTotal(),list));
+        Long pageCount = PageCountUtil.countPage( iPage.getTotal(), pageSize);
+        return ResponseResult.success(new RespPageBean<>(iPage.getTotal(),pageCount, iPage.getCurrent(),iPage.getSize(),list));
     }
 }
 

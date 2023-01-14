@@ -55,7 +55,9 @@ public class SecurityConfig {
             "/swagger-ui.html",
             "/v2/api-docs",
             "/webjars/**",
-            "/doc.html"
+            "/doc.html",
+            "/api/app/**",
+            "/image/**"
     };
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
