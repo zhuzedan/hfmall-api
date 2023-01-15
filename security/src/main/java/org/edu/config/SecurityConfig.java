@@ -56,8 +56,10 @@ public class SecurityConfig {
             "/v2/api-docs",
             "/webjars/**",
             "/doc.html",
-            "/api/app/**",
-            "/image/**"
+            //图片映射路径
+            "/image/**",
+            //app登录注册接口路径
+            "/api/app-user/**"
     };
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
