@@ -3,6 +3,7 @@ package org.edu.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.edu.domain.SystemUser;
 import org.edu.dto.LoginParam;
+import org.edu.dto.RegisterUser;
 import org.edu.result.ResponseResult;
 
 
@@ -18,5 +19,8 @@ public interface SystemUserService extends IService<SystemUser> {
 
 
     ResponseResult getInfo();
+
+    //app用户注册
+    ResponseResult register(RegisterUser registerUser);
 }
 

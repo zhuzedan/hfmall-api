@@ -6,6 +6,7 @@ import org.edu.constants.SecurityConstants;
 import org.edu.domain.SystemUser;
 import org.edu.dto.LoginParam;
 import org.edu.dto.LoginUser;
+import org.edu.dto.RegisterUser;
 import org.edu.dto.SecurityLoginUser;
 import org.edu.exception.BusinessException;
 import org.edu.mapper.SystemUserMapper;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -81,6 +83,22 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         map.put("routers",routerVoList);
         map.put("buttons",permsList);
         return ResponseResult.success(map);
+    }
+
+    /**
+     * app用户注册
+     * @param registerUser
+     * @return
+     */
+    @Override
+    public ResponseResult register(RegisterUser registerUser) {
+        SystemUser user = new SystemUser(registerUser);
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String bCryptPassword = bCryptPasswordEncoder.encode(registerUser.getPassword());
+        user.setPassword(bCryptPassword);
+        user.setIsAppuser(1);
+        systemUserMapper.insert(user);
+        return ResponseResult.success();
     }
 }
 

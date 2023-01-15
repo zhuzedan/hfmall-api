@@ -8,18 +8,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.edu.dto.RegisterUser;
+
 /**
  * 用户表(SystemUser)表实体类
  *
  * @author zzd
- * @since 2023-01-05 23:10:13
+ * @since 2023-01-15 22:39:45
  */
 @SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("t_system_user")
-public class SystemUser  {
+public class SystemUser implements Serializable {
     @TableId
     private Long id;
 
@@ -43,6 +45,25 @@ public class SystemUser  {
     private Date updateTime;
     //删除标记（0:可用 1:已删除）
     private Integer isDeleted;
+    //昵称
+    private String nickname;
+    //邮箱
+    private String email;
+    //性别;1=男,2=女,3=未知
+    private Integer gender;
+    //生日
+    private Date birthday;
+    //登录ip
+    private String loginIp;
+    //是否前台app用户
+    private Integer isAppuser;
+
+    public SystemUser(RegisterUser registerUser) {
+        this.username = registerUser.getUsername();
+        this.password = registerUser.getPassword();
+        this.phone = registerUser.getPhone();
+        this.email = registerUser.getEmail();
+    }
 
 }
 
