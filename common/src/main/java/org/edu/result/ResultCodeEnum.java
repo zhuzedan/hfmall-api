@@ -20,8 +20,6 @@ public enum ResultCodeEnum implements CustomizeResultCode{
     LOGIN_ERROR( 216, "账号/密码不正确"),
     ACCOUNT_STOP( 217, "账号已停用"),
     NODE_ERROR( 218, "该节点下有子节点，不可以删除"),
-    /* 默认失败 */
-    COMMON_FAIL(999, "失败"),
 
     /* 参数错误：1000～1999 */
     PARAM_NOT_VALID(1001, "参数无效"),
@@ -39,10 +37,6 @@ public enum ResultCodeEnum implements CustomizeResultCode{
     USER_ACCOUNT_NOT_EXIST(2007, "账号不存在"),
     USER_ACCOUNT_ALREADY_EXIST(2008, "账号已存在"),
     USER_ACCOUNT_USE_BY_OTHERS(2009, "账号下线"),
-
-    /*部门错误*/
-    DEPARTMENT_NOT_EXIST(3007, "部门不存在"),
-    DEPARTMENT_ALREADY_EXIST(3008, "部门已存在"),
 
     /* 业务错误 */
     NO_PERMISSION(3001, "没有权限"),

@@ -1,13 +1,14 @@
 package org.edu.controller;
 
 import org.edu.domain.SystemRole;
+import org.edu.exception.BusinessException;
+import org.edu.result.ResultCodeEnum;
 import org.edu.service.SystemRoleService;
 import org.edu.vo.RespPageBean;
 import org.edu.result.ResponseResult;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class SystemRoleController {
         if (flag) {
             return ResponseResult.success();
         }else {
-            return ResponseResult.error();
+            throw new BusinessException(ResultCodeEnum.DATA_ERROR.getCode(), ResultCodeEnum.DATA_ERROR.getMessage());
         }
     }
 
@@ -76,14 +77,14 @@ public class SystemRoleController {
             return ResponseResult.success();
         }
         else {
-            return ResponseResult.error();
+            throw new BusinessException(ResultCodeEnum.PARAM_NOT_VALID.getCode(), ResultCodeEnum.PARAM_NOT_VALID.getMessage());
         }
     }
     @ApiOperation(value = "批量删除数据")
     @DeleteMapping("/batchRemove")
     public ResponseResult batchRemove(@RequestBody List<Long> idList) {
         systemRoleService.removeByIds(idList);
-        return new  ResponseResult(200,"批量删除成功");
+        return ResponseResult.success();
     }
 }
 
