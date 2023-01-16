@@ -31,10 +31,13 @@ public class SystemRoleController {
     private SystemRoleService systemRoleService;
 
     @ApiOperation(value = "分页查询")
-    @GetMapping("/queryPage")
+    @PostMapping("/queryPage")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
+            @ApiImplicitParam(name = "roleName", value = "角色名", paramType = "query", dataType = "String"),
+            @ApiImplicitParam(name = "startCreateTime", value = "起始日期", paramType = "query", dataType = "date"),
+            @ApiImplicitParam(name = "endCreateTime", value = "结束日期", paramType = "query", dataType = "date"),
     })
     public ResponseResult<RespPageBean<SystemRole>> queryPage(@ApiIgnore @RequestParam HashMap params) {
         return systemRoleService.queryPage(params);

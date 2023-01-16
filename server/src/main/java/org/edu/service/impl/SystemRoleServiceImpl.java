@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.edu.constant.PageConstant;
 import org.edu.result.ResponseResult;
 import org.edu.utils.PageCountUtil;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 角色(SystemRole)表服务实现类
@@ -33,7 +35,18 @@ public class SystemRoleServiceImpl extends ServiceImpl<SystemRoleMapper, SystemR
         Page<SystemRole> page = new Page(pageNum, pageSize);
 
         LambdaQueryWrapper<SystemRole> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-
+        //角色名
+        if (!StringUtils.isBlank((CharSequence) params.get("roleName"))) {
+            lambdaQueryWrapper.like(SystemRole::getRoleName,params.get("roleName"));
+        }
+        // 起始日期
+        if(!StringUtils.isBlank((CharSequence) params.get("startCreateTime"))){
+            lambdaQueryWrapper.ge(SystemRole::getCreateTime,params.get("startCreateTime"));
+        }
+        // 结束日期
+        if(!StringUtils.isBlank((CharSequence) params.get("endCreateTime"))){
+            lambdaQueryWrapper.le(SystemRole::getCreateTime,params.get("endCreateTime"));
+        }
         IPage<SystemRole> iPage = this.page(page, lambdaQueryWrapper);
         List<SystemRole> list = iPage.getRecords();
         Long pageCount = PageCountUtil.countPage( iPage.getTotal(), pageSize);
