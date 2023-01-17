@@ -55,12 +55,20 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         //生成自己jwt给前端
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getSystemUser().getId().toString();
-        String jwt = JwtUtil.createJWT(userId);
-        Map<String,String> map = new HashMap();
-        map.put("token",jwt);
-        map.put("tokenHead",SecurityConstants.TOKEN_PREFIX);
+        //状态为1才能登录
+        Integer status = loginUser.getSystemUser().getStatus();
+        if (status == 1) {
+            String jwt = JwtUtil.createJWT(userId);
+            Map<String,String> map = new HashMap();
+            map.put("token",jwt);
+            map.put("tokenHead",SecurityConstants.TOKEN_PREFIX);
 
-        return ResponseResult.success("登录成功",map);
+            return ResponseResult.success("登录成功",map);
+        }
+        else {
+            throw new BusinessException(ResultCodeEnum.ACCOUNT_STOP.getCode(),ResultCodeEnum.ACCOUNT_STOP.getMessage());
+        }
+
     }
 
     /**

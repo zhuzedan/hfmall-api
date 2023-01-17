@@ -35,9 +35,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         LambdaQueryWrapper<Order> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 
         IPage<Order> iPage = this.page(page, lambdaQueryWrapper);
-        List<Order> list = iPage.getRecords();
-        Long pageCount = PageCountUtil.countPage( iPage.getTotal(), pageSize);
-        return ResponseResult.success(new RespPageBean<>(iPage.getTotal(),pageCount, iPage.getCurrent(),iPage.getSize(),list));
+        return ResponseResult.success(RespPageBean.restPage(iPage));
     }
 }
 

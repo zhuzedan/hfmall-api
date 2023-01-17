@@ -45,4 +45,13 @@ public class RespPageBean<T> {
         this.pageSize = pageSize;
         this.data = data;
     }
+    public static <T> RespPageBean<T> restPage(IPage<T> pageResult) {
+        RespPageBean<T> result = new RespPageBean<>();
+        result.setPageNum(pageResult.getCurrent());
+        result.setPageSize(pageResult.getSize());
+        result.setTotalCount(pageResult.getTotal());
+        result.setTotalPage(pageResult.getTotal()%pageResult.getSize()==0?pageResult.getTotal()/pageResult.getSize():pageResult.getTotal()/pageResult.getSize()+1);
+        result.setData(pageResult.getRecords());
+        return result;
+    }
 }
