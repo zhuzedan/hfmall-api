@@ -6,18 +6,25 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.edu.constant.PageConstant;
+import org.edu.constants.SecurityConstants;
+import org.edu.domain.SystemUserRole;
+import org.edu.mapper.SystemUserRoleMapper;
 import org.edu.result.ResponseResult;
 import org.edu.utils.PageCountUtil;
+import org.edu.vo.AssignRoleVo;
 import org.edu.vo.RespPageBean;
 import org.edu.domain.SystemRole;
 import org.edu.service.SystemRoleService;
 import org.edu.mapper.SystemRoleMapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 角色(SystemRole)表服务实现类
@@ -27,6 +34,8 @@ import java.util.Objects;
  */
 @Service("systemRoleService")
 public class SystemRoleServiceImpl extends ServiceImpl<SystemRoleMapper, SystemRole> implements SystemRoleService {
+    @Autowired
+    private SystemUserRoleMapper systemUserRoleMapper;
 
     @Override
     public ResponseResult<RespPageBean<SystemRole>> queryPage(HashMap params) {
@@ -51,6 +60,39 @@ public class SystemRoleServiceImpl extends ServiceImpl<SystemRoleMapper, SystemR
         List<SystemRole> list = iPage.getRecords();
         Long pageCount = PageCountUtil.countPage( iPage.getTotal(), pageSize);
         return ResponseResult.success(new RespPageBean<>(iPage.getTotal(),pageCount, iPage.getCurrent(),iPage.getSize(),list));
+    }
+    //获取用户的角色
+    @Override
+    public ResponseResult getRolesByUserId(Integer userId) {
+        //获取所有角色
+        List<SystemRole> roles = baseMapper.selectList(null);
+        LambdaQueryWrapper<SystemUserRole> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(SystemUserRole::getUserId,userId);
+        //获取当前用户角色
+        List<SystemUserRole> userRolesList = systemUserRoleMapper.selectList(lambdaQueryWrapper);
+        List<Long> ids= userRolesList.stream().map(item -> item.getRoleId()).collect(Collectors.toList());
+        Map<String,Object> map = new HashMap();
+        map.put("allRoles", roles);
+        map.put("userRoleIds", ids);
+        return ResponseResult.success(map);
+    }
+    //用户分配角色
+    @Override
+    public ResponseResult doAssign(AssignRoleVo assignRoleVo) {
+        //根据id删除之前分配的角色
+        LambdaQueryWrapper<SystemUserRole> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(SystemUserRole::getUserId,assignRoleVo.getUserId());
+        systemUserRoleMapper.delete(lambdaQueryWrapper);
+        //获取所有角色id，添加角色用户关系表
+        //角色id列表
+        List<String> roleIdList = assignRoleVo.getRoleIdList();
+        for (String roleId:roleIdList) {
+            SystemUserRole userRole = new SystemUserRole();
+            userRole.setUserId(Long.valueOf(assignRoleVo.getUserId()));
+            userRole.setRoleId(Long.valueOf(roleId));
+            systemUserRoleMapper.insert(userRole);
+        }
+        return ResponseResult.success();
     }
 }
 

@@ -5,6 +5,9 @@ import org.edu.domain.SystemUser;
 import org.edu.dto.LoginParam;
 import org.edu.dto.RegisterUser;
 import org.edu.result.ResponseResult;
+import org.edu.vo.RespPageBean;
+
+import java.util.HashMap;
 
 
 /**
@@ -22,5 +25,8 @@ public interface SystemUserService extends IService<SystemUser> {
 
     //app用户注册
     ResponseResult register(RegisterUser registerUser);
+
+    // 分页查询
+    ResponseResult<RespPageBean<SystemUser>> queryPage(HashMap params);
 }
 

@@ -3,6 +3,8 @@ package org.edu.domain;
 import java.util.Date;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,6 +46,7 @@ public class SystemUser implements Serializable {
     //更新时间
     private Date updateTime;
     //删除标记（0:可用 1:已删除）
+    @TableLogic(value = "0",delval = "1")
     private Integer isDeleted;
     //昵称
     private String nickname;

@@ -1,7 +1,12 @@
 package org.edu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
+import org.edu.constant.PageConstant;
 import org.edu.constants.SecurityConstants;
 import org.edu.domain.SystemUser;
 import org.edu.dto.LoginParam;
@@ -15,6 +20,7 @@ import org.edu.result.ResultCodeEnum;
 import org.edu.service.SystemMenuService;
 import org.edu.service.SystemUserService;
 import org.edu.utils.JwtUtil;
+import org.edu.vo.RespPageBean;
 import org.edu.vo.RouterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,6 +49,12 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     SystemUserMapper systemUserMapper;
     @Autowired
     SystemMenuService systemMenuService;
+
+    /**
+     * 用户登录
+     * @param loginParam
+     * @return
+     */
     @Override
     public ResponseResult login(LoginParam loginParam) {
         //使用ProviderManager auth方法进行验证
@@ -107,6 +119,31 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         user.setIsAppuser(1);
         systemUserMapper.insert(user);
         return ResponseResult.success();
+    }
+
+    /**
+     * 用户分页查询
+     * @param params
+     * @return
+     */
+    @Override
+    public ResponseResult<RespPageBean<SystemUser>> queryPage(HashMap params) {
+        int pageNum = Integer.parseInt((String) params.get(PageConstant.PAGE_NUM));
+        int pageSize = Integer.parseInt((String) params.get(PageConstant.PAGE_SIZE));
+        Page<SystemUser> page = new Page(pageNum, pageSize);
+
+        LambdaQueryWrapper<SystemUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        // 起始日期
+        if(!StringUtils.isBlank((CharSequence) params.get("startCreateTime"))){
+            lambdaQueryWrapper.ge(SystemUser::getCreateTime,params.get("startCreateTime"));
+        }
+        // 结束日期
+        if(!StringUtils.isBlank((CharSequence) params.get("endCreateTime"))){
+            lambdaQueryWrapper.le(SystemUser::getCreateTime,params.get("endCreateTime"));
+        }
+
+        IPage<SystemUser> iPage = this.page(page, lambdaQueryWrapper);
+        return ResponseResult.success(RespPageBean.restPage(iPage));
     }
 }
 
