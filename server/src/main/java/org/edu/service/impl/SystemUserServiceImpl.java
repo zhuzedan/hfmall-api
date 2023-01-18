@@ -30,6 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,6 +134,14 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         Page<SystemUser> page = new Page(pageNum, pageSize);
 
         LambdaQueryWrapper<SystemUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //用户名
+        if (!StringUtils.isBlank((CharSequence) params.get("username"))) {
+            lambdaQueryWrapper.like(SystemUser::getUsername,params.get("username"));
+        }
+        //手机号
+        if (!StringUtils.isBlank((CharSequence) params.get("phone"))) {
+            lambdaQueryWrapper.eq(SystemUser::getPhone,params.get("phone"));
+        }
         // 起始日期
         if(!StringUtils.isBlank((CharSequence) params.get("startCreateTime"))){
             lambdaQueryWrapper.ge(SystemUser::getCreateTime,params.get("startCreateTime"));
@@ -144,6 +153,24 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
 
         IPage<SystemUser> iPage = this.page(page, lambdaQueryWrapper);
         return ResponseResult.success(RespPageBean.restPage(iPage));
+    }
+
+    /**
+     * 更改用户状态
+     * @param params
+     * @return
+     */
+    @Override
+    public ResponseResult updateStatus(HashMap params) {
+        SystemUser systemUser = baseMapper.selectById((Serializable) params.get("id"));
+        if (systemUser.getId()==1) {
+            throw new BusinessException(ResultCodeEnum.NO_PERMISSION.getCode(), ResultCodeEnum.NO_PERMISSION.getMessage());
+        }else {
+            systemUser.setStatus(Integer.valueOf(String.valueOf(params.get("status"))));
+            baseMapper.updateById(systemUser);
+            System.out.println(baseMapper.updateById(systemUser));
+            return ResponseResult.success();
+        }
     }
 }
 

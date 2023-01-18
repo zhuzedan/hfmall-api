@@ -1,5 +1,6 @@
 package org.edu.controller;
 
+import io.swagger.annotations.*;
 import org.edu.domain.SystemUser;
 import org.edu.service.SystemRoleService;
 import org.edu.service.SystemUserService;
@@ -9,10 +10,6 @@ import org.edu.exception.BusinessException;
 import org.edu.result.ResultCodeEnum;
 import org.edu.result.ResponseResult;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -40,6 +37,8 @@ public class SystemUserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
+            @ApiImplicitParam(name = "username", value = "用户名", paramType = "query", dataType = "String"),
+            @ApiImplicitParam(name = "phone", value = "手机号", paramType = "query", dataType = "String"),
             @ApiImplicitParam(name = "startCreateTime", value = "起始日期", paramType = "query", dataType = "date"),
             @ApiImplicitParam(name = "endCreateTime", value = "结束日期", paramType = "query", dataType = "date")
     })
@@ -89,6 +88,17 @@ public class SystemUserController {
         systemUserService.removeByIds(idList);
         return new  ResponseResult(200,"批量删除成功");
     }
+
+    @ApiOperation(value = "更改用户状态")
+    @GetMapping("/updateStatus")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", paramType = "query", dataType = "integer"),
+            @ApiImplicitParam(name = "status", value = "状态", paramType = "query", dataType = "integer")
+    })
+    public ResponseResult updateStatus(@ApiIgnore @RequestParam HashMap params) {
+        return systemUserService.updateStatus(params);
+    }
+
     @ApiOperation(value = "获取用户的角色")
     @GetMapping("/toAssign")
     public ResponseResult toAssign(Integer userId) {

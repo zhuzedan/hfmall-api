@@ -8,6 +8,7 @@ import org.edu.result.ResponseResult;
 import org.edu.vo.RespPageBean;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -28,5 +29,8 @@ public interface SystemUserService extends IService<SystemUser> {
 
     // 分页查询
     ResponseResult<RespPageBean<SystemUser>> queryPage(HashMap params);
+
+    //更改用户状态
+    ResponseResult updateStatus(HashMap params);
 }
 
