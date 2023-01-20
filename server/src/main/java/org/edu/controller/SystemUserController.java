@@ -2,6 +2,7 @@ package org.edu.controller;
 
 import io.swagger.annotations.*;
 import org.edu.domain.SystemUser;
+import org.edu.dto.CreateUser;
 import org.edu.service.SystemRoleService;
 import org.edu.service.SystemUserService;
 import org.edu.vo.AssignRoleVo;
@@ -55,13 +56,14 @@ public class SystemUserController {
 
     @ApiOperation(value = "新增数据")
     @PostMapping("/save")
-    public ResponseResult insert(@RequestBody SystemUser systemUser) {
-        boolean flag = systemUserService.save(systemUser);
-        if (flag) {
-            return ResponseResult.success();
-        }else {
-            throw new BusinessException(ResultCodeEnum.DATA_ERROR.getCode(), ResultCodeEnum.DATA_ERROR.getMessage());
-        }
+    public ResponseResult insert(@RequestBody CreateUser createUser) {
+        return systemUserService.createUser(createUser);
+        // boolean flag = systemUserService.save(systemUser);
+        // if (flag) {
+        //     return ResponseResult.success();
+        // }else {
+        //     throw new BusinessException(ResultCodeEnum.DATA_ERROR.getCode(), ResultCodeEnum.DATA_ERROR.getMessage());
+        // }
     }
 
     @ApiOperation(value = "修改数据")

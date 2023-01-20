@@ -2,6 +2,7 @@ package org.edu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.edu.domain.SystemUser;
+import org.edu.dto.CreateUser;
 import org.edu.dto.LoginParam;
 import org.edu.dto.RegisterUser;
 import org.edu.result.ResponseResult;
@@ -32,5 +33,9 @@ public interface SystemUserService extends IService<SystemUser> {
 
     //更改用户状态
     ResponseResult updateStatus(HashMap params);
+
+    //新增用户
+    ResponseResult createUser(CreateUser createUser);
+
 }
 

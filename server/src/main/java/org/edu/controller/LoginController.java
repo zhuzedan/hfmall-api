@@ -24,10 +24,16 @@ public class LoginController {
     public ResponseResult login(@RequestBody LoginParam loginParam) {
         return systemUserService.login(loginParam);
     }
-
+    //获取用户信息
     @ApiOperation("用户信息")
     @GetMapping("/info")
     public ResponseResult getInfo() {
         return systemUserService.getInfo();
+    }
+    //用户退出登录
+    @ApiOperation("退出登录")
+    @PostMapping("/logout")
+    public ResponseResult logout() {
+        return ResponseResult.success();
     }
 }

@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.edu.dto.CreateUser;
 import org.edu.dto.RegisterUser;
 
 /**
@@ -68,5 +69,20 @@ public class SystemUser implements Serializable {
         this.email = registerUser.getEmail();
     }
 
+    public SystemUser(CreateUser createUser) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.headUrl = headUrl;
+        this.description = description;
+        this.status = status;
+        this.nickname = nickname;
+        this.email = email;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.loginIp = loginIp;
+        this.isAppuser = isAppuser;
+    }
 }
 

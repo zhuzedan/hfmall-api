@@ -9,10 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.edu.constant.PageConstant;
 import org.edu.constants.SecurityConstants;
 import org.edu.domain.SystemUser;
-import org.edu.dto.LoginParam;
-import org.edu.dto.LoginUser;
-import org.edu.dto.RegisterUser;
-import org.edu.dto.SecurityLoginUser;
+import org.edu.dto.*;
 import org.edu.exception.BusinessException;
 import org.edu.mapper.SystemUserMapper;
 import org.edu.result.ResponseResult;
@@ -28,8 +25,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import sun.security.util.Password;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +50,8 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     SystemUserMapper systemUserMapper;
     @Autowired
     SystemMenuService systemMenuService;
+    @Resource
+    PasswordEncoder passwordEncoder;
 
     /**
      * 用户登录
@@ -171,6 +173,24 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
             System.out.println(baseMapper.updateById(systemUser));
             return ResponseResult.success();
         }
+    }
+
+    /**
+     * 新增用户
+     * @param createUser
+     * @return
+     */
+    @Override
+    public ResponseResult createUser(CreateUser createUser) {
+        Long count = systemUserMapper.selectCount(new QueryWrapper<SystemUser>().eq("username", createUser.getUsername()));
+
+        if (count>0) {
+            throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getCode(), ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getMessage());
+        }
+        createUser.setPassword(passwordEncoder.encode(createUser.getPassword()));
+        SystemUser systemUser = new SystemUser(createUser);
+        systemUserMapper.insert(systemUser);
+        return ResponseResult.success();
     }
 }
 
