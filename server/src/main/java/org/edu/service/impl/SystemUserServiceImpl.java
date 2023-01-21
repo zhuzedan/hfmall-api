@@ -177,18 +177,16 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
 
     /**
      * 新增用户
-     * @param createUser
+     * @param systemUser
      * @return
      */
     @Override
-    public ResponseResult createUser(CreateUser createUser) {
-        Long count = systemUserMapper.selectCount(new QueryWrapper<SystemUser>().eq("username", createUser.getUsername()));
-
-        if (count>0) {
+    public ResponseResult createUser(SystemUser systemUser) {
+        Long count = systemUserMapper.selectCount(new QueryWrapper<SystemUser>().eq("username", systemUser.getUsername()));
+        if (count > 0) {
             throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getCode(), ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getMessage());
         }
-        createUser.setPassword(passwordEncoder.encode(createUser.getPassword()));
-        SystemUser systemUser = new SystemUser(createUser);
+        systemUser.setPassword(passwordEncoder.encode(systemUser.getPassword()));
         systemUserMapper.insert(systemUser);
         return ResponseResult.success();
     }
