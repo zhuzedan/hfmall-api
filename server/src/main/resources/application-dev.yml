@@ -13,8 +13,13 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://8.130.47.129:3306/hfmall?characterEncoding=utf-8&useSSL=false
-    username: root
+    username: zzdmysql
     password: ZZDmysql5859
+    hikari:
+      minimum-idle: 3
+      maximum-pool-size: 10
+      max-lifetime: 30000   #不能小于30秒，否则默认回到1800秒
+      connection-test-query: SELECT 1
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
