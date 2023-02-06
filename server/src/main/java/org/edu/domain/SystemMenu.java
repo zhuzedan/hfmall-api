@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,6 +50,7 @@ public class SystemMenu  {
     //更新时间
     private Date updateTime;
     //删除标记（0:可用 1:已删除）
+    @TableLogic(value = "0",delval = "1")
     private Integer isDeleted;
     // 下级列表
     @TableField(exist = false)

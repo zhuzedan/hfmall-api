@@ -15,7 +15,7 @@ import java.util.List;
  * @author zzd
  * @since 2023-01-06 22:01:51
  */
-@Api(tags = "菜单列表")
+@Api(tags = "RBAC_菜单管理")
 @RestController
 @RequestMapping("/api/menu")
 public class SystemMenuController {
@@ -24,7 +24,7 @@ public class SystemMenuController {
     private SystemMenuService systemMenuService;
 
     @ApiOperation(value = "获取菜单树形列表")
-    @GetMapping("findNodes")
+    @GetMapping("/findNodes")
     public ResponseResult findNodes() {
         return systemMenuService.findNodes();
     }
@@ -55,7 +55,7 @@ public class SystemMenuController {
     }
 
     @ApiOperation(value = "删除数据")
-    @DeleteMapping("delete")
+    @DeleteMapping("/delete")
     public ResponseResult delete(Long id) {
         return systemMenuService.removeMenuById(id);
     }

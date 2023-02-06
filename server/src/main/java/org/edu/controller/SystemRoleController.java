@@ -23,7 +23,7 @@ import java.util.List;
  * @author zzd
  * @since 2023-01-15 23:46:44
  */
-@Api(tags = "RBAC_角色管理接口")
+@Api(tags = "RBAC_角色管理")
 @RestController
 @RequestMapping("/api/systemRole")
 public class SystemRoleController {

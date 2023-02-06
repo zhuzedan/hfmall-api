@@ -17,7 +17,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @date : 2023-01-13 22:34
  */
 @RestController
-@Api(tags = "app登录接口")
+@Api(tags = "APP登录相关")
 @RequestMapping("/api/app-user")
 public class AppLoginController {
     @Autowired
