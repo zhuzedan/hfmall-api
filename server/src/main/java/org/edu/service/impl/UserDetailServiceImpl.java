@@ -3,6 +3,7 @@ package org.edu.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.edu.domain.SystemUser;
 import org.edu.dto.LoginUser;
+import org.edu.dto.SecurityLoginUser;
 import org.edu.mapper.SystemUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +30,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         SystemUser systemUser = systemUserMapper.selectOne(lambdaQueryWrapper);
         //如果查询不到数据就通过抛出异常来给出提示
         if(Objects.isNull(systemUser)){
-            throw new RuntimeException("用户名错误");
+            throw new UsernameNotFoundException("用户名或密码错误");
         }
         //TODO 根据用户查询权限信息 添加到LoginUser中
 
