@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.zzd.constant.PageConstant;
 import org.zzd.result.ResponseResult;
 import org.zzd.utils.PageHelper;
@@ -24,6 +25,14 @@ import java.util.HashMap;
  */
 @Service("systemOperationLogService")
 public class SystemOperationLogServiceImpl extends ServiceImpl<SystemOperationLogMapper, SystemOperationLog> implements SystemOperationLogService {
+
+    @Autowired
+    private SystemOperationLogMapper systemOperationLogMapper;
+
+    @Override
+    public void saveSystemLog(SystemOperationLog sysOperLog) {
+        systemOperationLogMapper.insert(sysOperLog);
+    }
 
     @Override
     public ResponseResult<PageHelper<SystemOperationLog>> queryPage(HashMap params) {

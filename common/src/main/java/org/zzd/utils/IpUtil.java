@@ -47,7 +47,7 @@ public class IpUtil {
         }
         // ipAddress = this.getRequest().getRemoteAddr();
 
-        return ipAddress;
+        return ipAddress.equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : ipAddress;
     }
 
     public static String getGatwayIpAddress(ServerHttpRequest request) {

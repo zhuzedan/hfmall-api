@@ -6,8 +6,7 @@ package org.zzd.result;
  */
 public enum ResultCodeEnum implements CustomizeResultCode{
     SUCCESS(200,"操作成功"),
-    FAIL(201, "失败"),
-    SERVICE_ERROR(2012, "服务异常"),
+    FAIL(201, "操作失败"),
     DATA_ERROR(204, "数据异常"),
     ILLEGAL_REQUEST(205, "非法请求"),
     REPEAT_SUBMIT(206, "重复提交"),

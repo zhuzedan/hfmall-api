@@ -10,7 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
  * @date : 2023/1/3
  */
 @SpringBootApplication
-@MapperScan("org.edu.mapper")
+@MapperScan("org.zzd.mapper")
 @EnableSwagger2WebMvc
 public class HFApplication {
     public static void main(String[] args) {

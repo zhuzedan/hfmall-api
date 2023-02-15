@@ -14,6 +14,7 @@ import java.util.HashMap;
  * @since 2023-02-15 11:57:22
  */
 public interface SystemOperationLogService extends IService<SystemOperationLog> {
+    void saveSystemLog(SystemOperationLog sysOperLog);
     // 分页查询
     ResponseResult<PageHelper<SystemOperationLog>> queryPage(HashMap params);
 }

@@ -1,6 +1,9 @@
 package org.zzd.controller;
 
+import org.zzd.annotation.Log;
 import org.zzd.domain.SystemRole;
+import org.zzd.enums.BusinessType;
+import org.zzd.enums.OperatorType;
 import org.zzd.exception.ResponseException;
 import org.zzd.result.ResultCodeEnum;
 import org.zzd.service.SystemRoleService;
@@ -16,6 +19,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 角色(SystemRole)表控制层
@@ -31,6 +35,7 @@ public class SystemRoleController {
     @Autowired
     private SystemRoleService systemRoleService;
 
+    @Log(title = "查询角色", businessType = BusinessType.READ, operatorType = OperatorType.MANAGE)
     @ApiOperation(value = "分页查询")
     @PostMapping("/queryPage")
     @ApiImplicitParams({
@@ -44,11 +49,16 @@ public class SystemRoleController {
         return systemRoleService.queryPage(params);
     }
 
+    @Log(title = "获取用户角色详情", businessType = BusinessType.READ, operatorType = OperatorType.MANAGE)
     @ApiOperation(value = "获取详情")
     @GetMapping("/read")
     public ResponseResult selectOne(Integer id) {
         SystemRole systemRole = systemRoleService.getById(id);
-        return ResponseResult.success(systemRole);
+        if (!Objects.isNull(systemRole)) {
+            return ResponseResult.success(systemRole);
+        }else {
+            throw new ResponseException(ResultCodeEnum.PARAM_NOT_VALID.getCode(), ResultCodeEnum.PARAM_NOT_VALID.getMessage());
+        }
     }
 
     @ApiOperation(value = "新增数据")
