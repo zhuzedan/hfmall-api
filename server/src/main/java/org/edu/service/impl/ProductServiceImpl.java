@@ -11,14 +11,12 @@ import org.edu.mapper.ProductMapper;
 import org.edu.result.ResponseResult;
 import org.edu.service.ProductService;
 import org.edu.utils.PageCountUtil;
-import org.edu.vo.RespPageBean;
+import org.edu.vo.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 商品表(Product)表服务实现类
@@ -33,7 +31,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     //分页查询商品
     @Override
-    public RespPageBean<Product> queryProductPage(HashMap params) {
+    public PageHelper<Product> queryProductPage(HashMap params) {
         int pageNum = Integer.parseInt((String) params.get(PageConstant.PAGE_NUM));
         int pageSize = Integer.parseInt((String) params.get(PageConstant.PAGE_SIZE));
         Page<Product> page = new Page(pageNum, pageSize);
@@ -43,11 +41,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         IPage<Product> iPage = this.page(page, lambdaQueryWrapper);
         List<Product> list = iPage.getRecords();
         Long pageCount = PageCountUtil.countPage( iPage.getTotal(), pageSize);
-        return new RespPageBean<>(iPage.getTotal(),pageCount, iPage.getCurrent(),iPage.getSize(),list);
+        return new PageHelper<>(iPage.getTotal(),pageCount, iPage.getCurrent(),iPage.getSize(),list);
     }
 
     @Override
-    public ResponseResult<RespPageBean<Product>> findHot(HashMap params) {
+    public ResponseResult<PageHelper<Product>> findHot(HashMap params) {
         int pageNum = Integer.parseInt((String) params.get(PageConstant.PAGE_NUM));
         int pageSize = Integer.parseInt((String) params.get(PageConstant.PAGE_SIZE));
         Page<Product> page = new Page(pageNum, pageSize);
@@ -56,7 +54,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         IPage<Product> iPage = this.page(page, productQueryWrapper);
         List<Product> list = iPage.getRecords();
-        return ResponseResult.success(new RespPageBean<>(iPage.getTotal(),list));
+        return ResponseResult.success(new PageHelper<>(iPage.getTotal(),list));
     }
 
 

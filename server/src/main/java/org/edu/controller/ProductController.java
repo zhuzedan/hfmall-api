@@ -7,7 +7,7 @@ import org.edu.domain.ProductSwiperImage;
 import org.edu.result.ResponseResult;
 import org.edu.service.ProductService;
 import org.edu.service.ProductSwiperImageService;
-import org.edu.vo.RespPageBean;
+import org.edu.vo.PageHelper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import springfox.documentation.annotations.ApiIgnore;
@@ -42,7 +42,7 @@ public class ProductController {
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
     })
-    public ResponseResult<RespPageBean<Product>> findHot(@ApiIgnore @RequestParam HashMap params) {
+    public ResponseResult<PageHelper<Product>> findHot(@ApiIgnore @RequestParam HashMap params) {
         return productService.findHot(params);
     }
 
@@ -57,7 +57,7 @@ public class ProductController {
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
     })
-    public ResponseResult<RespPageBean<Product>> queryProductPage(@ApiIgnore @RequestParam HashMap params) {
+    public ResponseResult<PageHelper<Product>> queryProductPage(@ApiIgnore @RequestParam HashMap params) {
         return ResponseResult.success(productService.queryProductPage(params));
     }
 

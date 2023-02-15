@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.edu.domain.SystemMenu;
-import org.edu.exception.BusinessException;
+import org.edu.exception.ResponseException;
 import org.edu.mapper.SystemMenuMapper;
 import org.edu.result.ResponseResult;
 import org.edu.result.ResultCodeEnum;
@@ -55,7 +55,7 @@ public class SystemMenuServiceImpl extends ServiceImpl<SystemMenuMapper, SystemM
         wrapper.eq("parent_id",id);
         Long count = baseMapper.selectCount(wrapper);
         if (count > 0) {
-            throw new BusinessException(ResultCodeEnum.NODE_ERROR.getCode(), ResultCodeEnum.NODE_ERROR.getMessage());
+            throw new ResponseException(ResultCodeEnum.NODE_ERROR.getCode(), ResultCodeEnum.NODE_ERROR.getMessage());
         }
         systemMenuMapper.deleteById(id);
         return ResponseResult.success();

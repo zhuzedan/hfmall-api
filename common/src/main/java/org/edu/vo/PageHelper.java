@@ -1,7 +1,6 @@
 package org.edu.vo;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class RespPageBean<T> {
+public class PageHelper<T> {
     //总条数
     private Long  totalCount;
     //总页数
@@ -28,25 +27,25 @@ public class RespPageBean<T> {
     /**
      * 分页
      */
-    public RespPageBean(IPage<T> page) {
+    public PageHelper(IPage<T> page) {
         this.data = page.getRecords();
         this.totalCount = page.getTotal();
     }
 
-    public RespPageBean(Long totalCount, List<T> data) {
+    public PageHelper(Long totalCount, List<T> data) {
         this.totalCount = totalCount;
         this.data = data;
     }
 
-    public RespPageBean(Long totalCount, Long totalPage,Long pageNum,Long pageSize, List<T> data) {
+    public PageHelper(Long totalCount, Long totalPage, Long pageNum, Long pageSize, List<T> data) {
         this.totalCount = totalCount;
         this.totalPage = totalPage;
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.data = data;
     }
-    public static <T> RespPageBean<T> restPage(IPage<T> pageResult) {
-        RespPageBean<T> result = new RespPageBean<>();
+    public static <T> PageHelper<T> restPage(IPage<T> pageResult) {
+        PageHelper<T> result = new PageHelper<>();
         result.setPageNum(pageResult.getCurrent());
         result.setPageSize(pageResult.getSize());
         result.setTotalCount(pageResult.getTotal());

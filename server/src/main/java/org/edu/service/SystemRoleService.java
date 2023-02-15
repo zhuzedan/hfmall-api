@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.edu.domain.SystemRole;
 import org.edu.result.ResponseResult;
 import org.edu.vo.AssignRoleVo;
-import org.edu.vo.RespPageBean;
+import org.edu.vo.PageHelper;
 
 import java.util.HashMap;
 
@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public interface SystemRoleService extends IService<SystemRole> {
     // 分页查询
-    ResponseResult<RespPageBean<SystemRole>> queryPage(HashMap params);
+    ResponseResult<PageHelper<SystemRole>> queryPage(HashMap params);
     //获取用户的角色
     ResponseResult getRolesByUserId(Integer userId);
     //用户分配角色

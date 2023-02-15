@@ -6,8 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.edu.constant.PageConstant;
 import org.edu.result.ResponseResult;
-import org.edu.utils.PageCountUtil;
-import org.edu.vo.RespPageBean;
+import org.edu.vo.PageHelper;
 import org.edu.domain.Order;
 import org.edu.service.OrderService;
 import org.edu.mapper.OrderMapper;
@@ -15,7 +14,6 @@ import org.edu.mapper.OrderMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * (Order)表服务实现类
@@ -27,7 +25,7 @@ import java.util.List;
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
 
     @Override
-    public ResponseResult<RespPageBean<Order>> queryPage(HashMap params) {
+    public ResponseResult<PageHelper<Order>> queryPage(HashMap params) {
         int pageNum = Integer.parseInt((String) params.get(PageConstant.PAGE_NUM));
         int pageSize = Integer.parseInt((String) params.get(PageConstant.PAGE_SIZE));
         Page<Order> page = new Page(pageNum, pageSize);
@@ -35,7 +33,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         LambdaQueryWrapper<Order> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 
         IPage<Order> iPage = this.page(page, lambdaQueryWrapper);
-        return ResponseResult.success(RespPageBean.restPage(iPage));
+        return ResponseResult.success(PageHelper.restPage(iPage));
     }
 }
 

@@ -29,9 +29,9 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler(ResponseException.class)
     @ResponseBody
-    public ResponseResult error(BusinessException e){
+    public ResponseResult error(ResponseException e){
         e.printStackTrace();
         return ResponseResult.error(e.getCode(),e.getMessage());
     }

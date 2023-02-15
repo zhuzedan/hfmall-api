@@ -3,11 +3,10 @@ package org.edu.controller;
 import org.edu.domain.Order;
 import org.edu.service.OrderService;
 import org.edu.result.ResponseResult;
-import org.edu.vo.RespPageBean;
+import org.edu.vo.PageHelper;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class OrderController {
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
     })
-    public ResponseResult<RespPageBean<Order>> queryPage(@ApiIgnore @RequestParam HashMap params) {
+    public ResponseResult<PageHelper<Order>> queryPage(@ApiIgnore @RequestParam HashMap params) {
         return orderService.queryPage(params);
     }
 

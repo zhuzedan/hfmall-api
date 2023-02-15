@@ -5,8 +5,8 @@ import org.edu.domain.SystemUser;
 import org.edu.service.SystemRoleService;
 import org.edu.service.SystemUserService;
 import org.edu.vo.AssignRoleVo;
-import org.edu.vo.RespPageBean;
-import org.edu.exception.BusinessException;
+import org.edu.vo.PageHelper;
+import org.edu.exception.ResponseException;
 import org.edu.result.ResultCodeEnum;
 import org.edu.result.ResponseResult;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +42,7 @@ public class SystemUserController {
             @ApiImplicitParam(name = "startCreateTime", value = "起始日期", paramType = "query", dataType = "date"),
             @ApiImplicitParam(name = "endCreateTime", value = "结束日期", paramType = "query", dataType = "date")
     })
-    public ResponseResult<RespPageBean<SystemUser>> queryPage(@ApiIgnore @RequestParam HashMap params) {
+    public ResponseResult<PageHelper<SystemUser>> queryPage(@ApiIgnore @RequestParam HashMap params) {
         return systemUserService.queryPage(params);
     }
 
@@ -74,7 +74,7 @@ public class SystemUserController {
             return ResponseResult.success();
         }
         else {
-            throw new BusinessException(ResultCodeEnum.PARAM_NOT_VALID.getCode(), ResultCodeEnum.PARAM_NOT_VALID.getMessage());
+            throw new ResponseException(ResultCodeEnum.PARAM_NOT_VALID.getCode(), ResultCodeEnum.PARAM_NOT_VALID.getMessage());
         }
     }
     @ApiOperation(value = "批量删除数据")

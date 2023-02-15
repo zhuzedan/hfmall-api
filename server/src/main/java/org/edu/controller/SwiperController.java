@@ -3,11 +3,10 @@ package org.edu.controller;
 
 
 import io.swagger.annotations.*;
-import org.edu.domain.Product;
 import org.edu.domain.Swiper;
 import org.edu.result.ResponseResult;
 import org.edu.service.SwiperService;
-import org.edu.vo.RespPageBean;
+import org.edu.vo.PageHelper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import springfox.documentation.annotations.ApiIgnore;
@@ -35,7 +34,7 @@ public class SwiperController {
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
     })
-    public ResponseResult<RespPageBean<Swiper>> queryPage(@ApiIgnore @RequestParam HashMap params) {
+    public ResponseResult<PageHelper<Swiper>> queryPage(@ApiIgnore @RequestParam HashMap params) {
         return swiperService.queryPage(params);
     }
 

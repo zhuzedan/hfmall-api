@@ -10,14 +10,14 @@ import org.edu.constant.PageConstant;
 import org.edu.constant.SecurityConstants;
 import org.edu.domain.SystemUser;
 import org.edu.dto.*;
-import org.edu.exception.BusinessException;
+import org.edu.exception.ResponseException;
 import org.edu.mapper.SystemUserMapper;
 import org.edu.result.ResponseResult;
 import org.edu.result.ResultCodeEnum;
 import org.edu.service.SystemMenuService;
 import org.edu.service.SystemUserService;
 import org.edu.utils.JwtTokenUtil;
-import org.edu.vo.RespPageBean;
+import org.edu.vo.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,7 +65,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         //校验失败了
         if(Objects.isNull(authenticate)){
-            throw new BusinessException(ResultCodeEnum.LOGIN_ERROR.getCode(), ResultCodeEnum.LOGIN_ERROR.getMessage());
+            throw new ResponseException(ResultCodeEnum.LOGIN_ERROR.getCode(), ResultCodeEnum.LOGIN_ERROR.getMessage());
         }
         //生成自己jwt给前端
         SystemUser loginUser = (SystemUser) authenticate.getPrincipal();
@@ -116,7 +116,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
      * @return
      */
     @Override
-    public ResponseResult<RespPageBean<SystemUser>> queryPage(HashMap params) {
+    public ResponseResult<PageHelper<SystemUser>> queryPage(HashMap params) {
         int pageNum = Integer.parseInt((String) params.get(PageConstant.PAGE_NUM));
         int pageSize = Integer.parseInt((String) params.get(PageConstant.PAGE_SIZE));
         Page<SystemUser> page = new Page(pageNum, pageSize);
@@ -140,7 +140,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         }
 
         IPage<SystemUser> iPage = this.page(page, lambdaQueryWrapper);
-        return ResponseResult.success(RespPageBean.restPage(iPage));
+        return ResponseResult.success(PageHelper.restPage(iPage));
     }
 
     /**
@@ -152,7 +152,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     public ResponseResult updateStatus(HashMap params) {
         SystemUser systemUser = baseMapper.selectById((Serializable) params.get("id"));
         if (systemUser.getId()==1) {
-            throw new BusinessException(ResultCodeEnum.NO_PERMISSION.getCode(), ResultCodeEnum.NO_PERMISSION.getMessage());
+            throw new ResponseException(ResultCodeEnum.NO_PERMISSION.getCode(), ResultCodeEnum.NO_PERMISSION.getMessage());
         }else {
             baseMapper.updateById(systemUser);
             System.out.println(baseMapper.updateById(systemUser));
@@ -169,7 +169,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     public ResponseResult createUser(SystemUser systemUser) {
         Long count = systemUserMapper.selectCount(new QueryWrapper<SystemUser>().eq("username", systemUser.getUsername()));
         if (count > 0) {
-            throw new BusinessException(ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getCode(), ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getMessage());
+            throw new ResponseException(ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getCode(), ResultCodeEnum.USER_ACCOUNT_ALREADY_EXIST.getMessage());
         }
         systemUser.setPassword(passwordEncoder.encode(systemUser.getPassword()));
         systemUserMapper.insert(systemUser);

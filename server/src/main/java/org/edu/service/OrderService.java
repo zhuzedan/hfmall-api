@@ -3,7 +3,7 @@ package org.edu.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.edu.domain.Order;
 import org.edu.result.ResponseResult;
-import org.edu.vo.RespPageBean;
+import org.edu.vo.PageHelper;
 
 import java.util.HashMap;
 
@@ -15,6 +15,6 @@ import java.util.HashMap;
  */
 public interface OrderService extends IService<Order> {
     // 分页查询
-    ResponseResult<RespPageBean<Order>> queryPage(HashMap params);
+    ResponseResult<PageHelper<Order>> queryPage(HashMap params);
 }
 

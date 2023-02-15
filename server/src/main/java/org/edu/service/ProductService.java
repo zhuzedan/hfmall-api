@@ -3,10 +3,9 @@ package org.edu.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.edu.domain.Product;
 import org.edu.result.ResponseResult;
-import org.edu.vo.RespPageBean;
+import org.edu.vo.PageHelper;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -18,9 +17,9 @@ import java.util.Map;
 public interface ProductService extends IService<Product> {
 
 
-    RespPageBean<Product> queryProductPage(HashMap params);
+    PageHelper<Product> queryProductPage(HashMap params);
 
 
-    ResponseResult<RespPageBean<Product>> findHot(HashMap params);
+    ResponseResult<PageHelper<Product>> findHot(HashMap params);
 }
 

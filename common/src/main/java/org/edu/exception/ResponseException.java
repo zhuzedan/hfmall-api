@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BusinessException extends RuntimeException{
+public class ResponseException extends RuntimeException{
     @ApiModelProperty(value = "状态码")
     private Integer code;
     @ApiModelProperty(value = "错误信息")
