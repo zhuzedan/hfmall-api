@@ -88,9 +88,10 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     public ResponseResult getInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SystemUser loginUser = (SystemUser) authentication.getPrincipal();
-
+        SystemUser systemUser = systemUserMapper.selectOne(new QueryWrapper<SystemUser>().eq("id", loginUser.getId()));
+        systemUser.setPassword(null);
         Map<String,Object> map = new HashMap<>();
-        map.put("userInfo",loginUser);
+        map.put("userInfo",systemUser);
         return ResponseResult.success(map);
     }
 
