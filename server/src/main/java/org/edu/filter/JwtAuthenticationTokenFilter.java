@@ -1,10 +1,9 @@
 package org.edu.filter;
 
 import io.jsonwebtoken.Claims;
-import org.edu.constants.SecurityConstants;
-import org.edu.dto.SecurityLoginUser;
-import org.edu.utils.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.edu.constant.SecurityConstants;
+import org.edu.domain.SystemUser;
+import org.edu.utils.JwtTokenUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -42,14 +41,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         //2解析token
         String userId;
         try {
-            Claims claims = JwtUtil.parseJWT(token);
+            Claims claims = JwtTokenUtil.parseJWT(token);
             userId = claims.getSubject();
         } catch (Exception e) {
             throw new RuntimeException("token不合法！");
         }
 
         //3获取userId
-        SecurityLoginUser securityLoginUser = new SecurityLoginUser();
+        SystemUser securityLoginUser = new SystemUser();
         securityLoginUser.setId(Long.valueOf(userId));
         if (Objects.isNull(securityLoginUser)) {
             throw new RuntimeException("当前用户未登录！");

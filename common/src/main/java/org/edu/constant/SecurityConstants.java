@@ -1,4 +1,4 @@
-package org.edu.constants;
+package org.edu.constant;
 
 public class SecurityConstants {
   public static final String SECRET_KEY = "zzd";

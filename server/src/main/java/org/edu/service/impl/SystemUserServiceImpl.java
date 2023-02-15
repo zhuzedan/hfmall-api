@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.edu.constant.PageConstant;
-import org.edu.constants.SecurityConstants;
+import org.edu.constant.SecurityConstants;
 import org.edu.domain.SystemUser;
 import org.edu.dto.*;
 import org.edu.exception.BusinessException;
@@ -16,26 +16,21 @@ import org.edu.result.ResponseResult;
 import org.edu.result.ResultCodeEnum;
 import org.edu.service.SystemMenuService;
 import org.edu.service.SystemUserService;
-import org.edu.utils.JwtUtil;
+import org.edu.utils.JwtTokenUtil;
 import org.edu.vo.RespPageBean;
-import org.edu.vo.RouterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sun.security.util.Password;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -73,21 +68,15 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
             throw new BusinessException(ResultCodeEnum.LOGIN_ERROR.getCode(), ResultCodeEnum.LOGIN_ERROR.getMessage());
         }
         //生成自己jwt给前端
-        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-        String userId = loginUser.getSystemUser().getId().toString();
+        SystemUser loginUser = (SystemUser) authenticate.getPrincipal();
+        String userId = loginUser.getId().toString();
         //状态为1才能登录
-        Integer status = loginUser.getSystemUser().getStatus();
-        if (status == 1) {
-            String jwt = JwtUtil.createJWT(userId);
+            String jwt = JwtTokenUtil.createJWT(userId);
             Map<String,String> map = new HashMap();
             map.put("token",jwt);
-            map.put("tokenHead",SecurityConstants.TOKEN_PREFIX);
+            map.put("tokenHead", SecurityConstants.TOKEN_PREFIX);
 
             return ResponseResult.success("登录成功",map);
-        }
-        else {
-            throw new BusinessException(ResultCodeEnum.ACCOUNT_STOP.getCode(),ResultCodeEnum.ACCOUNT_STOP.getMessage());
-        }
 
     }
 
@@ -98,18 +87,10 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     @Override
     public ResponseResult getInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        SecurityLoginUser loginUser = (SecurityLoginUser) authentication.getPrincipal();
-        SystemUser systemUser = systemUserMapper.selectOne(new QueryWrapper<SystemUser>().eq("id", loginUser.getId()));
-        systemUser.setPassword(null);
-        //查询菜单权限值
-        List<RouterVo> routerVoList = systemMenuService.getUserMenuList(systemUser.getId());
-        //查询按钮权限值
-        List<String> permsList = systemMenuService.getUserButtonList(systemUser.getId());
+        SystemUser loginUser = (SystemUser) authentication.getPrincipal();
 
         Map<String,Object> map = new HashMap<>();
-        map.put("userInfo",systemUser);
-        map.put("routers",routerVoList);
-        map.put("buttons",permsList);
+        map.put("userInfo",loginUser);
         return ResponseResult.success(map);
     }
 
@@ -173,7 +154,6 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         if (systemUser.getId()==1) {
             throw new BusinessException(ResultCodeEnum.NO_PERMISSION.getCode(), ResultCodeEnum.NO_PERMISSION.getMessage());
         }else {
-            systemUser.setStatus(Integer.valueOf(String.valueOf(params.get("status"))));
             baseMapper.updateById(systemUser);
             System.out.println(baseMapper.updateById(systemUser));
             return ResponseResult.success();

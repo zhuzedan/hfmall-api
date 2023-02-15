@@ -1,5 +1,6 @@
 package org.edu.domain;
 
+import java.util.Collection;
 import java.util.Date;
 
 import java.io.Serializable;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import org.edu.dto.RegisterUser;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * 用户表(SystemUser)表实体类
@@ -23,7 +26,7 @@ import org.edu.dto.RegisterUser;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("t_system_user")
-public class SystemUser implements Serializable {
+public class SystemUser implements Serializable, UserDetails {
     @TableId
     private Long id;
 
@@ -40,7 +43,7 @@ public class SystemUser implements Serializable {
     //描述
     private String description;
     //状态（1：正常 0：停用）
-    private Integer status;
+    private Boolean enabled;
     //创建时间
     private Date createTime;
     //更新时间
@@ -61,11 +64,67 @@ public class SystemUser implements Serializable {
     //是否前台app用户
     private Integer isAppuser;
 
+
     public SystemUser(RegisterUser registerUser) {
         this.username = registerUser.getUsername();
         this.password = registerUser.getPassword();
         this.phone = registerUser.getPhone();
         this.email = registerUser.getEmail();
+    }
+
+        // this.id = id;
+        // this.username = username;
+        // this.password = password;
+        // this.name = name;
+        // this.phone = phone;
+        // this.headUrl = headUrl;
+        // this.description = description;
+        // this.enabled = enabled;
+        // this.createTime = createTime;
+        // this.updateTime = updateTime;
+        // this.isDeleted = isDeleted;
+        // this.nickname = nickname;
+        // this.email = email;
+        // this.gender = gender;
+        // this.birthday = birthday;
+        // this.loginIp = loginIp;
+        // this.isAppuser = isAppuser;
+
+    public SystemUser(SystemUser systemUser) {
+        this.id = systemUser.getId();
+        this.username = systemUser.getUsername();
+        this.password = systemUser.getPassword();
+        this.name = systemUser.getName();
+        this.phone = systemUser.getPhone();
+        this.email = systemUser.getEmail();
+        this.headUrl = systemUser.getHeadUrl();
+        this.description = systemUser.getDescription();
+        this.enabled = systemUser.getEnabled();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }
 

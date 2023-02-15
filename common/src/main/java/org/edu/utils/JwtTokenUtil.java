@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.edu.constants.SecurityConstants;
+import org.edu.constant.SecurityConstants;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
@@ -17,7 +17,7 @@ import java.util.*;
  * @author :zzd
  * @date : 2022/11/4
  */
-public class JwtUtil {
+public class JwtTokenUtil {
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
 

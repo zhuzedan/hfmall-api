@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.edu.constant.PageConstant;
-import org.edu.constants.SecurityConstants;
 import org.edu.domain.SystemUserRole;
 import org.edu.mapper.SystemUserRoleMapper;
 import org.edu.result.ResponseResult;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**

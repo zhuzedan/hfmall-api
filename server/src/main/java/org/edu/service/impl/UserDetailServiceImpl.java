@@ -2,8 +2,6 @@ package org.edu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.edu.domain.SystemUser;
-import org.edu.dto.LoginUser;
-import org.edu.dto.SecurityLoginUser;
 import org.edu.mapper.SystemUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +33,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         //TODO 根据用户查询权限信息 添加到LoginUser中
 
         //封装成UserDetails对象返回
-        return new LoginUser(systemUser);
+        return new SystemUser(systemUser);
     }
 }
