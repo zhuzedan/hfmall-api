@@ -35,6 +35,7 @@ public interface SystemUserService extends IService<SystemUser> {
     //新增用户
     ResponseResult createUser(SystemUser systemUser);
 
-
+    //查询单个用户
+    ResponseResult queryUserOne(Integer id);
 }
 

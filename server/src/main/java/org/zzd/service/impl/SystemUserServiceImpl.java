@@ -33,6 +33,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 用户表(SystemUser)表服务实现类
@@ -175,6 +176,20 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         systemUser.setPassword(passwordEncoder.encode(systemUser.getPassword()));
         systemUserMapper.insert(systemUser);
         return ResponseResult.success();
+    }
+
+    /**
+     * 查询单个用户
+     * @param id
+     * @return
+     */
+    @Override
+    public ResponseResult queryUserOne(Integer id) {
+        SystemUser systemUser = systemUserMapper.selectOne(new QueryWrapper<SystemUser>().eq("id",id));
+        if (systemUser == null) {
+            throw new ResponseException(ResultCodeEnum.PARAM_NOT_VALID.getCode(),ResultCodeEnum.PARAM_NOT_VALID.getMessage());
+        }
+        return ResponseResult.success(systemUser);
     }
 }
 

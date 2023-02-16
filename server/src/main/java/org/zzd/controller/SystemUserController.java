@@ -49,8 +49,7 @@ public class SystemUserController {
     @ApiOperation(value = "获取详情")
     @GetMapping("/read")
     public ResponseResult selectOne(Integer id) {
-        SystemUser systemUser = systemUserService.getById(id);
-        return ResponseResult.success(systemUser);
+        return systemUserService.queryUserOne(id);
     }
 
     @ApiOperation(value = "新增用户")
