@@ -35,7 +35,7 @@ public class SystemRoleController {
     @Autowired
     private SystemRoleService systemRoleService;
 
-    @Log(title = "查询角色", businessType = BusinessType.READ, operatorType = OperatorType.MANAGE)
+    @Log(title = "查询角色", businessType = BusinessType.SELECT, operatorType = OperatorType.MANAGE)
     @ApiOperation(value = "分页查询")
     @PostMapping("/queryPage")
     @ApiImplicitParams({
@@ -61,6 +61,7 @@ public class SystemRoleController {
         }
     }
 
+    @Log(title = "新增角色",businessType = BusinessType.INSERT,operatorType = OperatorType.MANAGE)
     @ApiOperation(value = "新增数据")
     @PostMapping("/save")
     public ResponseResult insert(@RequestBody SystemRole systemRole) {
@@ -72,6 +73,7 @@ public class SystemRoleController {
         }
     }
 
+    @Log(title = "修改角色",businessType = BusinessType.UPDATE,operatorType = OperatorType.MANAGE)
     @ApiOperation(value = "修改数据")
     @PostMapping("/update")
     public ResponseResult update(@RequestBody SystemRole systemRole) {
@@ -79,6 +81,7 @@ public class SystemRoleController {
         return ResponseResult.success();
     }
 
+    @Log(title = "删除角色",businessType = BusinessType.DELETE,operatorType = OperatorType.MANAGE)
     @ApiOperation(value = "删除数据")
     @DeleteMapping("/delete")
     public ResponseResult delete(Long id) {
@@ -90,6 +93,8 @@ public class SystemRoleController {
             throw new ResponseException(ResultCodeEnum.PARAM_NOT_VALID.getCode(), ResultCodeEnum.PARAM_NOT_VALID.getMessage());
         }
     }
+
+
     @ApiOperation(value = "批量删除数据")
     @DeleteMapping("/batchRemove")
     public ResponseResult batchRemove(@RequestBody List<Long> idList) {

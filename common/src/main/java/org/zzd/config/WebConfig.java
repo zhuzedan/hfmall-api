@@ -14,6 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // TODO 绝对路径改成你电脑上的
-        registry.addResourceHandler("/image/**").addResourceLocations("file:D:\\projectByUniapp\\Huaxiamall\\static\\image\\");
+        registry.addResourceHandler("/image/**").addResourceLocations("file:D:\\projectByUniapp\\hfmall-app\\static\\image\\");
     }
 }

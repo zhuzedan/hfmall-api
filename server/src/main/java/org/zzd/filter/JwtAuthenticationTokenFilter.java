@@ -53,6 +53,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (Objects.isNull(securityLoginUser)) {
             throw new RuntimeException("当前用户未登录！");
         }
+        //TODO 获取用户权限信息
 
         //4封装Authentication
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken

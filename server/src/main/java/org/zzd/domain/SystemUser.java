@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.zzd.dto.RegisterUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -64,6 +67,8 @@ public class SystemUser implements Serializable, UserDetails {
     //是否前台app用户
     private Integer isAppuser;
 
+    // private List<String> permissions;
+
 
     public SystemUser(RegisterUser registerUser) {
         this.username = registerUser.getUsername();
@@ -71,24 +76,6 @@ public class SystemUser implements Serializable, UserDetails {
         this.phone = registerUser.getPhone();
         this.email = registerUser.getEmail();
     }
-
-        // this.id = id;
-        // this.username = username;
-        // this.password = password;
-        // this.name = name;
-        // this.phone = phone;
-        // this.headUrl = headUrl;
-        // this.description = description;
-        // this.enabled = enabled;
-        // this.createTime = createTime;
-        // this.updateTime = updateTime;
-        // this.isDeleted = isDeleted;
-        // this.nickname = nickname;
-        // this.email = email;
-        // this.gender = gender;
-        // this.birthday = birthday;
-        // this.loginIp = loginIp;
-        // this.isAppuser = isAppuser;
 
     public SystemUser(SystemUser systemUser) {
         this.id = systemUser.getId();
@@ -99,7 +86,6 @@ public class SystemUser implements Serializable, UserDetails {
         this.email = systemUser.getEmail();
         this.headUrl = systemUser.getHeadUrl();
         this.description = systemUser.getDescription();
-        this.enabled = systemUser.getEnabled();
     }
 
     @Override
@@ -124,7 +110,7 @@ public class SystemUser implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 }
 
