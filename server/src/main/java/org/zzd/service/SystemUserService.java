@@ -3,7 +3,7 @@ package org.zzd.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.zzd.domain.SystemUser;
 import org.zzd.dto.LoginParam;
-import org.zzd.dto.RegisterUser;
+import org.zzd.dto.RegisterUserDto;
 import org.zzd.result.ResponseResult;
 import org.zzd.utils.PageHelper;
 
@@ -24,7 +24,7 @@ public interface SystemUserService extends IService<SystemUser> {
     ResponseResult getInfo();
 
     //app用户注册
-    ResponseResult register(RegisterUser registerUser);
+    ResponseResult register(RegisterUserDto registerUserDto);
 
     // 分页查询
     ResponseResult<PageHelper<SystemUser>> queryPage(HashMap params);

@@ -97,18 +97,18 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
 
     /**
      * app用户注册
-     * @param registerUser
+     * @param registerUserDto
      * @return
      */
     @Override
-    public ResponseResult register(RegisterUser registerUser) {
-        SystemUser user = new SystemUser(registerUser);
+    public ResponseResult register(RegisterUserDto registerUserDto) {
+        SystemUser user = new SystemUser(registerUserDto);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String bCryptPassword = bCryptPasswordEncoder.encode(registerUser.getPassword());
+        String bCryptPassword = bCryptPasswordEncoder.encode(registerUserDto.getPassword());
         user.setPassword(bCryptPassword);
         user.setIsAppuser(1);
         systemUserMapper.insert(user);
-        return ResponseResult.success();
+        return ResponseResult.success(user.getId());
     }
 
     /**

@@ -3,7 +3,7 @@ package org.zzd.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.zzd.dto.LoginParam;
-import org.zzd.dto.RegisterUser;
+import org.zzd.dto.RegisterUserDto;
 import org.zzd.result.ResponseResult;
 import org.zzd.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class AppLoginController {
 
     @ApiOperation("用户注册")
     @PostMapping("/register")
-    public ResponseResult register(@RequestBody RegisterUser registerUser) {
-        return userService.register(registerUser);
+    public ResponseResult register(@RequestBody RegisterUserDto registerUserDto) {
+        return userService.register(registerUserDto);
     }
 }

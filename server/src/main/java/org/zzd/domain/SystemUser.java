@@ -4,19 +4,14 @@ import java.util.Collection;
 import java.util.Date;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.zzd.dto.RegisterUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.zzd.dto.RegisterUserDto;
 
 /**
  * 用户表(SystemUser)表实体类
@@ -46,7 +41,8 @@ public class SystemUser implements Serializable, UserDetails {
     //描述
     private String description;
     //状态（1：正常 0：停用）
-    private Boolean enabled;
+    @Getter(value = AccessLevel.NONE)
+    private String enabled;
     //创建时间
     private Date createTime;
     //更新时间
@@ -70,7 +66,7 @@ public class SystemUser implements Serializable, UserDetails {
     // private List<String> permissions;
 
 
-    public SystemUser(RegisterUser registerUser) {
+    public SystemUser(RegisterUserDto registerUser) {
         this.username = registerUser.getUsername();
         this.password = registerUser.getPassword();
         this.phone = registerUser.getPhone();

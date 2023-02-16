@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author :zzd
- * @date : 2023-01-14 0:54
+ * @date : 2023-02-16 8:54
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterUser {
+public class RegisterUserDto {
     //手机号
     private String phone;
     //用户名
