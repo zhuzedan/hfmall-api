@@ -6,12 +6,15 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.zzd.dto.CreateProductDto;
+
 /**
  * 商品表(Product)表实体类
  *
@@ -48,12 +51,27 @@ public class Product implements Serializable {
     private String description;
     //商品类别编号
     private Integer subCategoryId;
+    //删除标记（0:可用 1:已删除）
+    @TableLogic(value = "0",delval = "1")
+    private Integer isDeleted;
+    //创建时间
+    private Date createTime;
+    //更新时间
+    private Date updateTime;
     //商品图片轮播
     @TableField(select = false)
     private List<ProductSwiperImage> productSwiperImageList;
     //商品类别
     @TableField(select = false)
     private SubCategory subCategory;
+
+    public Product(CreateProductDto createProductDto) {
+        this.name = createProductDto.getName();
+        this.price = createProductDto.getPrice();
+        this.stock = createProductDto.getStock();
+        this.propic = createProductDto.getPropic();
+        this.description = createProductDto.getDescription();
+    }
 
 }
 

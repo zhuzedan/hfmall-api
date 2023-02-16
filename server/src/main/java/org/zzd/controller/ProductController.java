@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.*;
 import org.zzd.domain.Product;
 import org.zzd.domain.ProductSwiperImage;
+import org.zzd.dto.CreateProductDto;
+import org.zzd.exception.ResponseException;
 import org.zzd.result.ResponseResult;
+import org.zzd.result.ResultCodeEnum;
 import org.zzd.service.ProductService;
 import org.zzd.service.ProductSwiperImageService;
 import org.zzd.utils.PageHelper;
@@ -56,6 +59,7 @@ public class ProductController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
+            @ApiImplicitParam(name = "name", value = "商品名", paramType = "query", dataType = "String")
     })
     public ResponseResult<PageHelper<Product>> queryProductPage(@ApiIgnore @RequestParam HashMap params) {
         return ResponseResult.success(productService.queryProductPage(params));
@@ -71,14 +75,9 @@ public class ProductController {
     }
 
     @ApiOperation(value = "新增数据")
-    @PostMapping("/save")
-    public ResponseResult insert(@RequestBody Product product) {
-        boolean flag = productService.save(product);
-        if (flag) {
-            return new ResponseResult(200,"成功新增");
-        }else {
-            return new ResponseResult(401,"新增失败");
-        }
+    @PostMapping("/insert")
+    public ResponseResult insert(@RequestBody CreateProductDto createProductDto) {
+        return productService.createProduct(createProductDto);
     }
 
     @ApiOperation(value = "修改数据")
@@ -89,14 +88,14 @@ public class ProductController {
     }
 
     @ApiOperation(value = "删除数据")
-    @DeleteMapping("delete/{id}")
-    public ResponseResult delete(@PathVariable Long id) {
+    @DeleteMapping("/delete")
+    public ResponseResult delete(Long id) {
         boolean flag = productService.removeById(id);
         if (flag) {
-            return new ResponseResult(200,"删除成功");
+            return ResponseResult.success();
         }
         else {
-            return new ResponseResult(200,"失败");
+            throw new ResponseException(ResultCodeEnum.PARAM_NOT_VALID.getCode(), ResultCodeEnum.PARAM_NOT_VALID.getMessage());
         }
     }
     @ApiOperation(value = "批量删除数据")

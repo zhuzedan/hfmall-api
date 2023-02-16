@@ -2,6 +2,7 @@ package org.zzd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.zzd.domain.Product;
+import org.zzd.dto.CreateProductDto;
 import org.zzd.result.ResponseResult;
 import org.zzd.utils.PageHelper;
 
@@ -21,5 +22,8 @@ public interface ProductService extends IService<Product> {
 
 
     ResponseResult<PageHelper<Product>> findHot(HashMap params);
+
+    //创建商品
+    ResponseResult createProduct(CreateProductDto createProductDto);
 }
 

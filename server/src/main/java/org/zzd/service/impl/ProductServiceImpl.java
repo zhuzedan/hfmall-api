@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.zzd.constant.PageConstant;
 import org.zzd.domain.Product;
+import org.zzd.domain.SystemUser;
+import org.zzd.dto.CreateProductDto;
 import org.zzd.mapper.ProductMapper;
 import org.zzd.result.ResponseResult;
 import org.zzd.service.ProductService;
@@ -37,7 +40,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Page<Product> page = new Page(pageNum, pageSize);
 
         LambdaQueryWrapper<Product> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-
+        //用户名
+        if (!StringUtils.isBlank((CharSequence) params.get("name"))) {
+            lambdaQueryWrapper.like(Product::getName,params.get("name"));
+        }
         IPage<Product> iPage = this.page(page, lambdaQueryWrapper);
         List<Product> list = iPage.getRecords();
         Long pageCount = PageCountUtil.countPage( iPage.getTotal(), pageSize);
@@ -55,6 +61,14 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         IPage<Product> iPage = this.page(page, productQueryWrapper);
         List<Product> list = iPage.getRecords();
         return ResponseResult.success(new PageHelper<>(iPage.getTotal(),list));
+    }
+
+    //创建商品
+    @Override
+    public ResponseResult createProduct(CreateProductDto createProductDto) {
+        Product product = new Product(createProductDto);
+        productMapper.insert(product);
+        return ResponseResult.success();
     }
 
 
