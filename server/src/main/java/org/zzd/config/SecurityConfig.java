@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.zzd.handler.AccessDeniedHandlerImpl;
+import org.zzd.handler.AuthenticationEntryPointImpl;
 
 /**
  * security配置类
@@ -24,6 +26,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     @Autowired
     JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    @Autowired
+    AuthenticationEntryPointImpl authenticationEntryPoint;
+    @Autowired
+    AccessDeniedHandlerImpl accessDeniedHandler;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -45,6 +51,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
         //把token校验过滤器添加到过滤器链中,放在其他过滤器之前
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        //处理异常
+        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler);
         //允许跨域
         http.cors();
         return http.build();
