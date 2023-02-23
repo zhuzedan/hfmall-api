@@ -17,5 +17,9 @@ import java.util.HashMap;
 public interface SwiperService extends IService<Swiper> {
 
     ResponseResult<PageHelper<Swiper>> queryPage(HashMap params);
+
+    //app查轮播图
+    ResponseResult querySwiper();
+
 }
 

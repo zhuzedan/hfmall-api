@@ -1,6 +1,7 @@
 package org.zzd.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -38,6 +39,12 @@ public class SwiperServiceImpl extends ServiceImpl<SwiperMapper, Swiper> impleme
         List<Swiper> list = iPage.getRecords();
 
         return ResponseResult.success(new PageHelper<>(iPage.getTotal(),list));
+    }
+
+    @Override
+    public ResponseResult querySwiper() {
+        List<Swiper> swipers = swiperMapper.selectList(new QueryWrapper<Swiper>().eq("status",1));
+        return ResponseResult.success(swipers);
     }
 }
 
