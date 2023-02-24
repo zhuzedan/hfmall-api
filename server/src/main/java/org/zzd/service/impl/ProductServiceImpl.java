@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.zzd.constant.PageConstant;
+import org.zzd.domain.News;
 import org.zzd.domain.Product;
 import org.zzd.domain.SystemUser;
 import org.zzd.dto.CreateProductDto;
@@ -69,6 +70,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Product product = new Product(createProductDto);
         productMapper.insert(product);
         return ResponseResult.success();
+    }
+
+    //查全部商品
+    @Override
+    public ResponseResult queryAllProduct() {
+        QueryWrapper<Product> productQueryWrapper = new QueryWrapper<Product>();
+        List<Product> products = productMapper.selectList(productQueryWrapper);
+        return ResponseResult.success(products);
+
     }
 
 

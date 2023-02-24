@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zzd.constant.PageConstant;
+import org.zzd.domain.SystemRole;
 import org.zzd.result.ResponseResult;
 import org.zzd.utils.PageHelper;
 import org.zzd.domain.News;
@@ -32,9 +33,26 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
     private NewsMapper newsMapper;
 
     @Override
-    public ResponseResult queryNews() {
-        List<News> news = newsMapper.selectList(new QueryWrapper<News>());
+    public ResponseResult queryNews(String title) {
+        LambdaQueryWrapper<News> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //文章名
+        if (!StringUtils.isBlank(title)) {
+            lambdaQueryWrapper.like(News::getTitle,title);
+        }
+        List<News> news = newsMapper.selectList(lambdaQueryWrapper);
         return ResponseResult.success(news);
+    }
+
+    @Override
+    public ResponseResult readOneNew(Integer newId) {
+        QueryWrapper<News> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",newId);
+        News oneNew = newsMapper.selectOne(queryWrapper);
+        Integer clickCount = oneNew.getClick();
+        clickCount += 1;
+        oneNew.setClick(clickCount);
+        newsMapper.updateById(oneNew);
+        return ResponseResult.success(oneNew);
     }
 }
 

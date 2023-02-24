@@ -15,6 +15,9 @@ import java.util.HashMap;
  */
 public interface NewsService extends IService<News> {
 
-    ResponseResult queryNews();
+    ResponseResult queryNews(String title);
+
+    ResponseResult readOneNew(Integer newId);
+
 }
 

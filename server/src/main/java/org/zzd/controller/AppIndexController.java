@@ -1,17 +1,20 @@
 package org.zzd.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.zzd.domain.Product;
 import org.zzd.dto.LoginParam;
 import org.zzd.mapper.NewsMapper;
+import org.zzd.mapper.ProductMapper;
 import org.zzd.result.ResponseResult;
 import org.zzd.service.NewsService;
+import org.zzd.service.ProductService;
 import org.zzd.service.SwiperService;
+import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.HashMap;
 
 /**
  * @author :zzd
@@ -27,6 +30,9 @@ public class AppIndexController {
     @Autowired
     private NewsService newsService;
 
+    @Autowired
+    private ProductService productService;
+
     @ApiOperation("轮播图查")
     @PostMapping("/swiper")
     public ResponseResult querySwiper() {
@@ -35,7 +41,22 @@ public class AppIndexController {
 
     @ApiOperation("资讯列表")
     @PostMapping("/news")
-    public ResponseResult queryNews() {
-        return newsService.queryNews();
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "title", value = "文章题目", paramType = "query", dataType = "String"),
+    })
+    public ResponseResult queryNews(String title) {
+        return newsService.queryNews(title);
+    }
+
+    @ApiOperation("资讯详情")
+    @GetMapping("/readOneNew")
+    public ResponseResult readNewDetails(Integer newId) {
+        return newsService.readOneNew(newId);
+    }
+
+    @ApiOperation("查全部商品")
+    @GetMapping("/queryAllProduct")
+    public ResponseResult queryAllProduct() {
+        return productService.queryAllProduct();
     }
 }

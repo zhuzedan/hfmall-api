@@ -37,7 +37,7 @@ public class News implements Serializable {
     //资讯内容
     private String content;
     //浏览量
-    private String click;
+    private Integer click;
     //文章图片
     private String image;
     //是否删除0没删1删了
