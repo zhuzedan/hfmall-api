@@ -27,7 +27,7 @@ import java.util.Objects;
  * @author zzd
  * @since 2023-01-15 23:46:44
  */
-@Api(tags = "RBAC_角色管理")
+@Api(tags = "角色管理")
 @RestController
 @RequestMapping("/api/systemRole")
 public class SystemRoleController {

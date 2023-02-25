@@ -54,5 +54,25 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
         newsMapper.updateById(oneNew);
         return ResponseResult.success(oneNew);
     }
+
+    @Override
+    public ResponseResult<PageHelper<News>> queryPage(HashMap params) {
+        int pageNum = Integer.parseInt((String) params.get(PageConstant.PAGE_NUM));
+        int pageSize = Integer.parseInt((String) params.get(PageConstant.PAGE_SIZE));
+        Page<News> page = new Page(pageNum, pageSize);
+
+        LambdaQueryWrapper<News> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        // 起始日期
+        if(!StringUtils.isBlank((CharSequence) params.get("startCreateTime"))){
+            lambdaQueryWrapper.ge(News::getCreateTime,params.get("startCreateTime"));
+        }
+        // 结束日期
+        if(!StringUtils.isBlank((CharSequence) params.get("endCreateTime"))){
+            lambdaQueryWrapper.le(News::getCreateTime,params.get("endCreateTime"));
+        }
+
+        IPage<News> iPage = this.page(page, lambdaQueryWrapper);
+        return ResponseResult.success(PageHelper.restPage(iPage));
+    }
 }
 

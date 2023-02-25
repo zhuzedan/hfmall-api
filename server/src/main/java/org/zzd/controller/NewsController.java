@@ -1,7 +1,7 @@
 package org.zzd.controller;
 
-import org.zzd.domain.SystemOperationLog;
-import org.zzd.service.SystemOperationLogService;
+import org.zzd.domain.News;
+import org.zzd.service.NewsService;
 import org.zzd.utils.PageHelper;
 import org.zzd.exception.ResponseException;
 import org.zzd.result.ResultCodeEnum;
@@ -16,20 +16,21 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * (SystemOperationLog)表控制层
+ * (News)表控制层
  *
  * @author zzd
- * @since 2023-02-15 12:02:45
+ * @since 2023-02-25 20:34:31
  */
-@Api(tags = "操作日志")
+@Api(tags = "汉服资讯")
 @RestController
-@RequestMapping("/api/systemOperationLog")
-public class SystemOperationLogController {
+@RequestMapping("/api/news")
+public class NewsController {
 
     @Autowired
-    private SystemOperationLogService systemOperationLogService;
+    private NewsService newsService;
 
     @ApiOperation(value = "分页查询")
     @PostMapping("/queryPage")
@@ -39,21 +40,26 @@ public class SystemOperationLogController {
             @ApiImplicitParam(name = "startCreateTime", value = "起始日期", paramType = "query", dataType = "date"),
             @ApiImplicitParam(name = "endCreateTime", value = "结束日期", paramType = "query", dataType = "date")
     })
-    public ResponseResult<PageHelper<SystemOperationLog>> queryPage(@ApiIgnore @RequestParam HashMap params) {
-        return systemOperationLogService.queryPage(params);
+    public ResponseResult<PageHelper<News>> queryPage(@ApiIgnore @RequestParam HashMap params) {
+        return newsService.queryPage(params);
     }
 
     @ApiOperation(value = "获取详情")
     @GetMapping("/read")
     public ResponseResult selectOne(Integer id) {
-        SystemOperationLog systemOperationLog = systemOperationLogService.getById(id);
-        return ResponseResult.success(systemOperationLog);
+        News news = newsService.getById(id);
+        if (!Objects.isNull(news)) {
+            return ResponseResult.success(news);
+        }
+        else {
+            throw new ResponseException(ResultCodeEnum.PARAM_NOT_VALID.getCode(), ResultCodeEnum.PARAM_NOT_VALID.getMessage());
+        }
     }
 
     @ApiOperation(value = "新增数据")
     @PostMapping("/save")
-    public ResponseResult insert(@RequestBody SystemOperationLog systemOperationLog) {
-        boolean flag = systemOperationLogService.save(systemOperationLog);
+    public ResponseResult insert(@RequestBody News news) {
+        boolean flag = newsService.save(news);
         if (flag) {
             return ResponseResult.success();
         }else {
@@ -63,15 +69,15 @@ public class SystemOperationLogController {
 
     @ApiOperation(value = "修改数据")
     @PostMapping("/update")
-    public ResponseResult update(@RequestBody SystemOperationLog systemOperationLog) {
-        systemOperationLogService.updateById(systemOperationLog);
+    public ResponseResult update(@RequestBody News news) {
+        newsService.updateById(news);
         return ResponseResult.success();
     }
 
     @ApiOperation(value = "删除数据")
     @DeleteMapping("delete")
     public ResponseResult delete(Long id) {
-        boolean flag = systemOperationLogService.removeById(id);
+        boolean flag = newsService.removeById(id);
         if (flag) {
             return ResponseResult.success();
         }
@@ -82,7 +88,7 @@ public class SystemOperationLogController {
     @ApiOperation(value = "批量删除数据")
     @DeleteMapping("/batchRemove")
     public ResponseResult batchRemove(@RequestBody List<Long> idList) {
-        systemOperationLogService.removeByIds(idList);
+        newsService.removeByIds(idList);
         return ResponseResult.success();
     }
 }

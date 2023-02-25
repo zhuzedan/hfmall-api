@@ -1,6 +1,8 @@
 package org.zzd.controller;
 
 import org.zzd.domain.Order;
+import org.zzd.exception.ResponseException;
+import org.zzd.result.ResultCodeEnum;
 import org.zzd.service.OrderService;
 import org.zzd.result.ResponseResult;
 import org.zzd.utils.PageHelper;
@@ -65,14 +67,14 @@ public class OrderController {
     }
 
     @ApiOperation(value = "删除数据")
-    @DeleteMapping("delete/{id}")
-    public ResponseResult delete(@PathVariable Long id) {
+    @DeleteMapping("delete")
+    public ResponseResult delete(Long id) {
         boolean flag = orderService.removeById(id);
         if (flag) {
-            return new ResponseResult(200,"删除成功");
+            return ResponseResult.success();
         }
         else {
-            return new ResponseResult(200,"失败");
+            throw new ResponseException(ResultCodeEnum.PARAM_NOT_VALID.getCode(), ResultCodeEnum.PARAM_NOT_VALID.getMessage());
         }
     }
     @ApiOperation(value = "批量删除数据")

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author zzd
  * @since 2023-01-06 22:01:51
  */
-@Api(tags = "RBAC_菜单管理")
+@Api(tags = "菜单管理")
 @RestController
 @RequestMapping("/api/menu")
 public class SystemMenuController {

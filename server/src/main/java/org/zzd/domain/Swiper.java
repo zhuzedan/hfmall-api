@@ -2,6 +2,7 @@ package org.zzd.domain;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,7 @@ public class Swiper  {
     //更新时间
     private Date updateTime;
     //删除标记（0:可用 1:已删除）
+    @TableLogic(value = "0",delval = "1")
     private Integer isDeleted;
     //排序
     private Integer sort;

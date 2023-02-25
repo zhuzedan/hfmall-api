@@ -4,7 +4,9 @@ package org.zzd.controller;
 
 import io.swagger.annotations.*;
 import org.zzd.domain.Swiper;
+import org.zzd.exception.ResponseException;
 import org.zzd.result.ResponseResult;
+import org.zzd.result.ResultCodeEnum;
 import org.zzd.service.SwiperService;
 import org.zzd.utils.PageHelper;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +24,14 @@ import java.util.List;
  */
 @Api(tags = "轮播图")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/swiper")
 public class SwiperController {
 
     @Autowired
     private SwiperService swiperService;
 
     @ApiOperation(value = "轮播图列表")
-    @GetMapping("/querySwiper")
+    @PostMapping("/querySwiper")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
@@ -64,14 +66,14 @@ public class SwiperController {
     }
 
     @ApiOperation(value = "删除数据")
-    @DeleteMapping("delete/{id}")
-    public ResponseResult delete(@PathVariable Long id) {
+    @DeleteMapping("delete")
+    public ResponseResult delete(Long id) {
         boolean flag = swiperService.removeById(id);
         if (flag) {
-            return new ResponseResult(200,"删除成功");
+            return ResponseResult.success();
         }
         else {
-            return new ResponseResult(200,"失败");
+            throw new ResponseException(ResultCodeEnum.PARAM_NOT_VALID.getCode(), ResultCodeEnum.PARAM_NOT_COMPLETE.getMessage());
         }
     }
     @ApiOperation(value = "批量删除数据")

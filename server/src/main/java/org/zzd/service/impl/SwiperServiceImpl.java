@@ -38,7 +38,7 @@ public class SwiperServiceImpl extends ServiceImpl<SwiperMapper, Swiper> impleme
         IPage<Swiper> iPage = swiperMapper.selectPage(page, lambdaQueryWrapper);
         List<Swiper> list = iPage.getRecords();
 
-        return ResponseResult.success(new PageHelper<>(iPage.getTotal(),list));
+        return ResponseResult.success(PageHelper.restPage(iPage));
     }
 
     @Override

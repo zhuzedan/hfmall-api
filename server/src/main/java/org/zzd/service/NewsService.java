@@ -19,5 +19,6 @@ public interface NewsService extends IService<News> {
 
     ResponseResult readOneNew(Integer newId);
 
+    ResponseResult<PageHelper<News>> queryPage(HashMap params);
 }
 

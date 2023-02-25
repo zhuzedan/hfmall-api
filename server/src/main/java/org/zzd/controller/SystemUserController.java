@@ -22,7 +22,7 @@ import java.util.List;
  * @author zzd
  * @since 2023-01-17 19:08:49
  */
-@Api(tags = "RBAC_用户管理")
+@Api(tags = "用户管理")
 @RestController
 @RequestMapping("/api/systemUser")
 public class SystemUserController {

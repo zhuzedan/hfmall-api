@@ -3,6 +3,8 @@ package org.zzd.domain;
 import java.util.Date;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,6 +46,7 @@ public class Order implements Serializable {
     //订单状态 0 未支付 1 已经支付
     private Integer status;
     //删除状态0删除1未删除
+    @TableLogic(value = "0",delval = "1")
     private Integer isDeleted;
     //订单备注
     private String remark;

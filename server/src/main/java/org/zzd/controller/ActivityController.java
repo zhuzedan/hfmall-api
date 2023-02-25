@@ -24,7 +24,7 @@ import java.util.Objects;
  * @author zzd
  * @since 2023-02-25 13:46:11
  */
-@Api(tags = "")
+@Api(tags = "汉服活动")
 @RestController
 @RequestMapping("/api/activity")
 public class ActivityController {
