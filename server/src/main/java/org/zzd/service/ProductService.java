@@ -27,7 +27,7 @@ public interface ProductService extends IService<Product> {
     ResponseResult createProduct(CreateProductDto createProductDto);
 
     //查全部商品
-    ResponseResult queryAllProduct();
+    ResponseResult queryAllProduct(String name);
 
 }
 

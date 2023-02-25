@@ -9,6 +9,7 @@ import org.zzd.dto.LoginParam;
 import org.zzd.mapper.NewsMapper;
 import org.zzd.mapper.ProductMapper;
 import org.zzd.result.ResponseResult;
+import org.zzd.service.ActivityService;
 import org.zzd.service.NewsService;
 import org.zzd.service.ProductService;
 import org.zzd.service.SwiperService;
@@ -31,6 +32,9 @@ public class AppIndexController {
     private NewsService newsService;
 
     @Autowired
+    private ActivityService activityService;
+
+    @Autowired
     private ProductService productService;
 
     @ApiOperation("轮播图查")
@@ -40,7 +44,7 @@ public class AppIndexController {
     }
 
     @ApiOperation("资讯列表")
-    @PostMapping("/news")
+    @GetMapping("/news")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "title", value = "文章题目", paramType = "query", dataType = "String"),
     })
@@ -56,7 +60,22 @@ public class AppIndexController {
 
     @ApiOperation("查全部商品")
     @GetMapping("/queryAllProduct")
-    public ResponseResult queryAllProduct() {
-        return productService.queryAllProduct();
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "商品名", paramType = "query", dataType = "String"),
+    })
+    public ResponseResult queryAllProduct(String name) {
+        return productService.queryAllProduct(name);
+    }
+
+    @ApiOperation("查全部活动")
+    @GetMapping("/queryActivities")
+    public ResponseResult queryActivities() {
+        return activityService.queryActivities();
+    }
+
+    @ApiOperation("参与活动")
+    @PostMapping("/joinActivity")
+    public ResponseResult joinActivity(@RequestParam String id) {
+        return activityService.joinActivity(id);
     }
 }

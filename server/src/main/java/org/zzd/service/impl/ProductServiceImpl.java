@@ -74,8 +74,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     //查全部商品
     @Override
-    public ResponseResult queryAllProduct() {
-        QueryWrapper<Product> productQueryWrapper = new QueryWrapper<Product>();
+    public ResponseResult queryAllProduct(String name) {
+        LambdaQueryWrapper<Product> productQueryWrapper = new LambdaQueryWrapper<>();
+        if (!StringUtils.isBlank(name)) {
+            productQueryWrapper.like(Product::getName,name);
+        }
         List<Product> products = productMapper.selectList(productQueryWrapper);
         return ResponseResult.success(products);
 
