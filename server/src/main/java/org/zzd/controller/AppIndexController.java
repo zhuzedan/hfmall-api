@@ -1,21 +1,22 @@
 package org.zzd.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.zzd.domain.PostMessage;
 import org.zzd.domain.Product;
 import org.zzd.dto.LoginParam;
 import org.zzd.mapper.NewsMapper;
+import org.zzd.mapper.PostMessageMapper;
 import org.zzd.mapper.ProductMapper;
 import org.zzd.result.ResponseResult;
-import org.zzd.service.ActivityService;
-import org.zzd.service.NewsService;
-import org.zzd.service.ProductService;
-import org.zzd.service.SwiperService;
+import org.zzd.service.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author :zzd
@@ -36,6 +37,9 @@ public class AppIndexController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private PostMessageService postMessageService;
 
     @ApiOperation("轮播图查")
     @PostMapping("/swiper")
@@ -77,5 +81,11 @@ public class AppIndexController {
     @PostMapping("/joinActivity")
     public ResponseResult joinActivity(@RequestParam String id) {
         return activityService.joinActivity(id);
+    }
+
+    @ApiOperation("app圈子主贴+跟帖")
+    @GetMapping("/queryCircle")
+    public ResponseResult queryCircle() {
+        return postMessageService.queryCircles();
     }
 }
