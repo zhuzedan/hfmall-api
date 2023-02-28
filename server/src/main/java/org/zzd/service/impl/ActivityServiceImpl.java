@@ -37,6 +37,10 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
         Page<Activity> page = new Page(pageNum, pageSize);
 
         LambdaQueryWrapper<Activity> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //根据名称查询
+        if(!StringUtils.isBlank((CharSequence) params.get("name"))){
+            lambdaQueryWrapper.like(Activity::getName,params.get("name"));
+        }
         // 起始日期
         if(!StringUtils.isBlank((CharSequence) params.get("startCreateTime"))){
             lambdaQueryWrapper.ge(Activity::getCreateTime,params.get("startCreateTime"));

@@ -67,7 +67,9 @@ public class SecurityConfig {
             //图片映射路径
             "/image/**",
             //app登录注册接口路径
-            "/api/app-user/**"
+            "/api/app-user/**",
+            //图片上传
+            "/api/upload"
     };
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;

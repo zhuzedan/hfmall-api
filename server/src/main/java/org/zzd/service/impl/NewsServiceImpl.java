@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zzd.constant.PageConstant;
+import org.zzd.domain.Activity;
 import org.zzd.domain.SystemRole;
 import org.zzd.result.ResponseResult;
 import org.zzd.utils.PageHelper;
@@ -62,6 +63,10 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
         Page<News> page = new Page(pageNum, pageSize);
 
         LambdaQueryWrapper<News> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //根据名称查询
+        if(!StringUtils.isBlank((CharSequence) params.get("title"))){
+            lambdaQueryWrapper.like(News::getTitle,params.get("title"));
+        }
         // 起始日期
         if(!StringUtils.isBlank((CharSequence) params.get("startCreateTime"))){
             lambdaQueryWrapper.ge(News::getCreateTime,params.get("startCreateTime"));

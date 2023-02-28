@@ -37,6 +37,7 @@ public class NewsController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页", paramType = "query", dataType = "integer",defaultValue = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小", paramType = "query", dataType = "integer",defaultValue = "10"),
+            @ApiImplicitParam(name = "title", value = "新闻标题", paramType = "query", dataType = "String"),
             @ApiImplicitParam(name = "startCreateTime", value = "起始日期", paramType = "query", dataType = "date"),
             @ApiImplicitParam(name = "endCreateTime", value = "结束日期", paramType = "query", dataType = "date")
     })

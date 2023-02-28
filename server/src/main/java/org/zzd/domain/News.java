@@ -4,12 +4,11 @@ import java.util.Date;
 
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+
 /**
  * (News)表实体类
  *
@@ -24,13 +23,15 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class News implements Serializable {
     //主键
     @TableId
-    private Integer id;
+    private Long id;
 
     //创建时间
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     //发表时间
     private Date publishTime;
     //更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
     //资讯标题
     private String title;
